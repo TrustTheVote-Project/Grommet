@@ -88,6 +88,21 @@ android {
         exclude 'LICENSE.txt'
     }
 
+    sourceSets {
+        internalDebug {
+            assets.srcDirs = ['src/internalDebug/assets', 'src/internalDebug/assets/']
+            res.srcDirs = ['src/internalDebug/res', 'src/internalDebug/res/']
+
+
+            manifest.srcFile
+            'src/internalDebug/AndroidManifest.xml'
+        }
+        internalRelease { res.srcDirs = ['src/internalRelease/res', 'src/internalRelease/res/'] }
+        productionDebug { res.srcDirs = ['src/productionDebug/res', 'src/productionDebug/res/'] }
+        productionRelease {
+            res.srcDirs = ['src/productionRelease/res', 'src/productionRelease/res/']
+        }
+    }
 }
 
 configurations.all {
@@ -117,4 +132,35 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
     internalDebugCompile 'com.squareup.retrofit2:retrofit-mock:2.0.0'
 
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.jakewharton.timber:timber:4.0.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
+    internalDebugCompile 'com.jakewharton:process-phoenix:1.0.2'
+
+    internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.2'
+
+    internalCompile 'com.mattprecious.telescope:telescope:1.5.0@aar'
+
+    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
+
+//    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
+
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    // TODO https://code.google.com/p/android-test-kit/issues/detail?id=157
+    //androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2'
+    androidTestCompile 'com.android.support.test:runner:0.4.1'
+    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.squareup.spoon:spoon-client:1.2.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.google.truth:truth:0.27'
 }
+

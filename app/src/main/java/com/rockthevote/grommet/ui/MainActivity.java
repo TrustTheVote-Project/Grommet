@@ -1,7 +1,9 @@
-package com.rockthevote.grommet;
+package com.rockthevote.grommet.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.rockthevote.grommet.R;
 
 public class MainActivity extends AppCompatActivity {
 
