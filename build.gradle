@@ -22,7 +22,7 @@ buildscript {
 
 ext {
     espressoVersion = '2.2.1'
-    supportLibVersion = '23.3.0'
+    supportLibVersion = '23.4.0'
     okhttpVersion = '2.7.4'
 }
 
