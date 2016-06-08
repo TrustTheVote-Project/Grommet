@@ -16,11 +16,13 @@ import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
 
-public final class GrommetApp extends Application{
+public final class GrommetApp extends Application {
     private ObjectGraph objectGraph;
 
-    @Inject ActivityHierarchyServer activityHierarchyServer;
-    @Inject LumberYard lumberYard;
+    @Inject
+    ActivityHierarchyServer activityHierarchyServer;
+    @Inject
+    LumberYard lumberYard;
 
 
     @Override
@@ -29,7 +31,7 @@ public final class GrommetApp extends Application{
         AndroidThreeTen.init(this);
         LeakCanary.install(this);
 
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         } else {
             // TODO start analytics tracking
@@ -44,7 +46,8 @@ public final class GrommetApp extends Application{
         registerActivityLifecycleCallbacks(activityHierarchyServer);
     }
 
-    @Override public Object getSystemService(@NonNull String name) {
+    @Override
+    public Object getSystemService(@NonNull String name) {
         if (Injector.matchesService(name)) {
             return objectGraph;
         }

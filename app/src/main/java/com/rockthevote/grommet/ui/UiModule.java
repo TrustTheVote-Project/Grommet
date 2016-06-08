@@ -7,7 +7,7 @@ import dagger.Provides;
 
 @Module(
         injects = {
-                MainActivity.class,
+                MainActivity.class
         },
         complete = false,
         library = true

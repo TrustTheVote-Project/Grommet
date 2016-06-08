@@ -3,6 +3,7 @@ package com.rockthevote.grommet.ui;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.rockthevote.grommet.R;
@@ -15,14 +16,14 @@ import dagger.ObjectGraph;
 
 public final class MainActivity extends AppCompatActivity {
 
-    @Inject
-    ViewContainer viewContainer;
+    @Inject ViewContainer viewContainer;
 
     private ObjectGraph activityGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LayoutInflater inflater = getLayoutInflater();
 
         ObjectGraph appGraph = Injector.obtain(getApplication());
         appGraph.inject(this);
@@ -31,7 +32,7 @@ public final class MainActivity extends AppCompatActivity {
 
         ViewGroup container = viewContainer.forActivity(this);
 
-        getLayoutInflater().inflate(R.layout.activity_main, container);
+        inflater.inflate(R.layout.activity_main, container);
         ButterKnife.bind(this, container);
 
     }
