@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rockthevote.grommet.data.api.ApiModule;
 import com.rockthevote.grommet.data.api.RockyAdapterFactory;
 import com.rockthevote.grommet.data.api.StringNormalizerFactory;
@@ -75,12 +74,6 @@ public final class DataModule {
     @Singleton
     OkHttpClient provideOkHttpClient(Application app) {
         return createOkHttpClient(app).build();
-    }
-
-    @Provides
-    @Singleton
-    FirebaseAnalytics provideFirebase(Application app) {
-        return FirebaseAnalytics.getInstance(app);
     }
 
     @Provides

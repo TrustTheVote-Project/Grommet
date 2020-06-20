@@ -1,0 +1,27 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:6.0.0"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+def buildSrcDir = '../buildsystem'
+apply from: "${buildSrcDir}/shadow.gradle"
+
+shadowJar {
+    classifier = ''
+}
+
+repositories {
+    // this repo should be available in every subproject that uses kotlin
+    mavenCentral() // or jcentrer
+}
+
+dependencies {
+    implementation 'com.squareup.dagger:dagger:1.2.5'
+}

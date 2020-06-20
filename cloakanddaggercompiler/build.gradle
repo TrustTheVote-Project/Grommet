@@ -1,0 +1,34 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:6.0.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'kotlin-kapt'
+
+def buildSrcDir = '../buildsystem'
+apply from: "${buildSrcDir}/shadow.gradle"
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+
+shadowJar {
+    transform(ServiceFileTransformer)
+    classifier = ''
+}
+
+repositories {
+    // this repo should be available in every subproject that uses kotlin
+    mavenCentral() // or jcentrer
+}
+
+dependencies {
+    kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
+}

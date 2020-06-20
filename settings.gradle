@@ -1,1 +1,3 @@
+include ':cloakanddaggerlibrary'
+include ':cloakanddaggercompiler'
 include ':app'
