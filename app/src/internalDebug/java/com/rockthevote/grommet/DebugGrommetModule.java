@@ -1,6 +1,8 @@
 package com.rockthevote.grommet;
 
 import com.rockthevote.grommet.data.DebugDataModule;
+import com.rockthevote.grommet.data.IsInstrumentationTest;
+import com.rockthevote.grommet.data.db.DebugDatabaseModule;
 import com.rockthevote.grommet.ui.DebugUiModule;
 
 import javax.inject.Singleton;
@@ -13,7 +15,9 @@ import dagger.Provides;
         includes = {
                 DebugUiModule.class,
                 DebugDataModule.class,
-                DebugActionsModule.class
+                DebugActionsModule.class,
+                DebugDatabaseModule.class
+
         },
         overrides = true
 )
@@ -24,7 +28,8 @@ public final class DebugGrommetModule {
 
     @Provides
     @Singleton
-    @IsInstrumentationTest boolean provideIsInstrumentationTest() {
+    @IsInstrumentationTest
+    boolean provideIsInstrumentationTest() {
         return instrumentationTest;
     }
 }

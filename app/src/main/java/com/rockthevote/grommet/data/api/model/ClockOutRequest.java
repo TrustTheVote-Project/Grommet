@@ -9,6 +9,8 @@ import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+import androidx.annotation.Nullable;
+
 @AutoValue
 public abstract class ClockOutRequest {
 
@@ -31,7 +33,8 @@ public abstract class ClockOutRequest {
     public abstract String clockOutDatetime();
 
     @Json(name = "session_timeout_length")
-    public abstract long sessionTimeoutLength();
+    @Nullable
+    public abstract Long sessionTimeoutLength();
 
     @Json(name = "abandoned_registrations")
     public abstract int abandonedRegistrations();
@@ -62,7 +65,7 @@ public abstract class ClockOutRequest {
 
         public abstract Builder clockOutDatetime(String clockOutDatetime);
 
-        public abstract Builder sessionTimeoutLength(long sessionTimeoutLength);
+        public abstract Builder sessionTimeoutLength(Long sessionTimeoutLength);
 
         public abstract Builder abandonedRegistrations(int abandonedRegistrations);
 

@@ -16,7 +16,7 @@ import okhttp3.HttpUrl;
         overrides = true
 )
 public final class InternalReleaseApiModule {
-    public static final HttpUrl STAGING_API_URL = HttpUrl.parse("https://staging.rocky.rockthevote.com/api/v3/");
+    public static final HttpUrl STAGING_API_URL = HttpUrl.parse("https://staging.rocky.rockthevote.com/api/v4/");
 
     @Provides
     @Singleton

@@ -26,9 +26,15 @@
             android:enabled="false"
             android:label="@string/leak_canary_display_activity_label"
             android:taskAffinity="com.squareup.leakcanary"
-            android:theme="@style/leak_canary_LeakCanary.Base">
+            android:theme="@style/leak_canary_LeakCanary.Base"
+            tools:replace="android:taskAffinity">
             <intent-filter tools:node="removeAll" />
         </activity>
+
+        <activity
+            android:name="com.rockthevote.grommet.util.ProcessPhoenix"
+            android:process=":phoenix"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

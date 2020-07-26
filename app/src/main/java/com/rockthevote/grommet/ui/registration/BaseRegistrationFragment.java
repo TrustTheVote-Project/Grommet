@@ -1,28 +1,50 @@
 package com.rockthevote.grommet.ui.registration;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
+import com.rockthevote.grommet.data.db.dao.PartnerInfoDao;
+import com.rockthevote.grommet.data.db.dao.RegistrationDao;
+import com.rockthevote.grommet.data.db.dao.SessionDao;
+import com.rockthevote.grommet.databinding.FragmentRegistrationBaseBinding;
 
+import javax.inject.Inject;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import rx.Observable;
 
-public class BaseRegistrationFragment extends Fragment {
-
+public abstract class BaseRegistrationFragment extends Fragment {
 
     private @LayoutRes int contentView;
 
+    protected RegistrationViewModel viewModel;
+
+    @Inject
+    RegistrationDao registrationDao;
+
+    @Inject
+    SessionDao sessionDao;
+
+    @Inject
+    PartnerInfoDao partnerInfoDao;
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Injector.obtain(getActivity()).inject(this);
+        viewModel = new ViewModelProvider(
+                requireActivity(),
+                new RegistrationViewModelFactory(registrationDao, sessionDao, partnerInfoDao)
+        ).get(RegistrationViewModel.class);
     }
 
     @Nullable
@@ -34,6 +56,20 @@ public class BaseRegistrationFragment extends Fragment {
         return v;
     }
 
+    protected View wrapBinding(
+            View view,
+            LayoutInflater inflater,
+            ViewGroup container
+    ) {
+
+        FragmentRegistrationBaseBinding binding = FragmentRegistrationBaseBinding
+                .inflate(inflater, container, false);
+
+        binding.contentArea.addView(view);
+
+        return binding.getRoot();
+    }
+
     protected void setContentView(@LayoutRes int contentView) {
         this.contentView = contentView;
     }
@@ -42,6 +78,8 @@ public class BaseRegistrationFragment extends Fragment {
         return Observable.just(true);
     }
 
-
-
+    /**
+     * Stores the current Fragment's state. ONLY store valid state or it will fail.
+     */
+    public abstract void storeState();
 }

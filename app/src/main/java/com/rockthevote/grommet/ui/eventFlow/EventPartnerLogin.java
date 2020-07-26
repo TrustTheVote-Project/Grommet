@@ -2,8 +2,6 @@ package com.rockthevote.grommet.ui.eventFlow;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,36 +9,26 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.f2prateek.rx.preferences2.Preference;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
 import com.rockthevote.grommet.data.api.RockyService;
-import com.rockthevote.grommet.data.api.model.PartnerNameResponse;
-import com.rockthevote.grommet.data.api.model.PartnerVolunteerText;
-import com.rockthevote.grommet.data.api.model.RegistrationNotificationText;
-import com.rockthevote.grommet.data.prefs.PartnerId;
-import com.rockthevote.grommet.data.prefs.PartnerName;
-import com.rockthevote.grommet.data.prefs.PartnerTimeout;
-import com.rockthevote.grommet.data.prefs.PartnerVolunteerTextPref;
-import com.rockthevote.grommet.data.prefs.RegistrationDeadline;
-import com.rockthevote.grommet.data.prefs.RegistrationText;
+import com.rockthevote.grommet.data.db.dao.PartnerInfoDao;
+import com.rockthevote.grommet.data.db.dao.SessionDao;
 import com.rockthevote.grommet.ui.misc.BetterViewAnimator;
 import com.rockthevote.grommet.ui.misc.ObservableValidator;
-import com.squareup.sqlbrite.BriteDatabase;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.NEW_SESSION;
+import static com.rockthevote.grommet.data.db.model.SessionStatus.NEW_SESSION;
 
 /**
  * Created by Mechanical Man on 7/14/18.
@@ -48,15 +36,8 @@ import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.NEW_SE
 public class EventPartnerLogin extends FrameLayout implements EventFlowPage {
 
     @Inject RockyService rockyService;
-    @Inject BriteDatabase db;
-
-    // preferences
-    @Inject @PartnerId Preference<String> partnerIdPref;
-    @Inject @PartnerName Preference<String> partnerNamePref;
-    @Inject @RegistrationDeadline Preference<Date> registrationDeadlinePref;
-    @Inject @RegistrationText Preference<RegistrationNotificationText> registrationTextPref;
-    @Inject @PartnerTimeout Preference<Long> partnerTimeoutPref;
-    @Inject @PartnerVolunteerTextPref Preference<PartnerVolunteerText> partnerVolunteerTextPref;
+    @Inject PartnerInfoDao partnerInfoDao;
+    @Inject SessionDao sessionDao;
 
     @NotEmpty
     @BindView(R.id.ede_til_partner_id) TextInputLayout edePartnerIdTIL;
@@ -67,6 +48,8 @@ public class EventPartnerLogin extends FrameLayout implements EventFlowPage {
     private ObservableValidator validator;
 
     private EventFlowCallback listener;
+
+    private PartnerLoginViewModel viewModel;
 
     public EventPartnerLogin(Context context) {
         this(context, null);
@@ -92,8 +75,71 @@ public class EventPartnerLogin extends FrameLayout implements EventFlowPage {
         if (!isInEditMode()) {
             ButterKnife.bind(this);
             validator = new ObservableValidator(this, getContext());
-            edePartnerId.setText(partnerIdPref.get());
+
         }
+
+        viewModel = new ViewModelProvider(
+                (AppCompatActivity) getContext(),
+                new PartnerLoginViewModelFactory(rockyService, partnerInfoDao, sessionDao)
+        ).get(PartnerLoginViewModel.class);
+
+        observeData();
+    }
+
+    private void observeData() {
+        viewModel.getPartnerLoginState().observe(
+                (AppCompatActivity) getContext(), partnerLoginState -> {
+                    if (partnerLoginState instanceof PartnerLoginState.Init) {
+                        viewAnimator.setDisplayedChildId(R.id.event_partner_id_save);
+                        edePartnerId.setEnabled(true);
+
+                    } else if (partnerLoginState instanceof PartnerLoginState.Loading) {
+                        viewAnimator.setDisplayedChildId(R.id.save_progress_bar);
+                        edePartnerId.setEnabled(false);
+                    }
+                });
+
+        viewModel.getEffect().observe(
+                (AppCompatActivity) getContext(), effect -> {
+                    if (effect instanceof PartnerLoginState.Success) {
+                        edePartnerIdTIL.setError(null);
+                        listener.setState(NEW_SESSION, true);
+
+                    } else if (effect instanceof PartnerLoginState.Error) {
+                        edePartnerIdTIL.setError(
+                                getContext().getString(R.string.error_partner_id));
+
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.error_title)
+                                .setIcon(R.drawable.ic_warning_24dp)
+                                .setMessage(R.string.login_no_wifi_error)
+                                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> dialogInterface.dismiss())
+                                .create()
+                                .show();
+
+                    } else if (effect instanceof PartnerLoginState.InvalidVersion) {
+                        edePartnerIdTIL.setError(null);
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.update_required)
+                                .setIcon(R.drawable.ic_warning_24dp)
+                                .setMessage(R.string.login_invalid_version)
+                                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> dialogInterface.dismiss())
+                                .create()
+                                .show();
+                    } else if (effect instanceof PartnerLoginState.NotFound) {
+                        edePartnerIdTIL.setError(
+                                getContext().getString(R.string.error_partner_id));
+                    }
+                });
+
+        viewModel.getPartnerInfoPartnerID().observe(
+                (AppCompatActivity) getContext(), id -> {
+                    if (id != -1) {
+                        edePartnerId.setText(String.valueOf(id));
+                    } else {
+                        edePartnerId.setText("");
+                    }
+                });
     }
 
     @OnClick(R.id.event_partner_id_save)
@@ -103,71 +149,15 @@ public class EventPartnerLogin extends FrameLayout implements EventFlowPage {
                 getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-        // allow the user to not set a partner ID
         if (validator.validate().toBlocking().single()) {
-            if (edePartnerId.getText().toString().equals(partnerIdPref.get())) {
-                // update the event flow listener
-                listener.setState(NEW_SESSION, true);
-            } else {
-                rockyService.getPartnerName(edePartnerId.getText().toString())
-                        .subscribeOn(Schedulers.io())
-                        .delay(500, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(() -> {
-                            viewAnimator.setDisplayedChildId(R.id.save_progress_bar);
-                            edePartnerId.setEnabled(false);
-                        })
-                        .doOnCompleted(() -> {
-                            viewAnimator.setDisplayedChildId(R.id.event_partner_id_save);
-                            edePartnerId.setEnabled(true);
-                        })
-                        .subscribe(result -> {
-                            if (!result.isError() && result.response().isSuccessful()) {
-                                PartnerNameResponse partnerNameResponse = result.response().body();
-                                if (partnerNameResponse.isValid()) {
-                                    updateSessionData(partnerNameResponse);
-                                } else {
-                                    edePartnerIdTIL.setError(
-                                            getContext().getString(R.string.error_partner_id));
-                                }
-                            } else {
-                                edePartnerIdTIL.setError(
-                                        getContext().getString(R.string.error_partner_id));
-
-                                new AlertDialog.Builder(getContext())
-                                        .setTitle(R.string.check_wifi)
-                                        .setIcon(R.drawable.ic_warning_24dp)
-                                        .setMessage(R.string.login_no_wifi_error)
-                                        .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> dialogInterface.dismiss())
-                                        .create()
-                                        .show();
-
-
-
-                            }
-                        });
-            }
+            viewModel.validatePartnerId(Long.parseLong(edePartnerId.getText().toString()));
         }
     }
 
     @OnClick(R.id.clear_partner_info)
     public void onClickClearPartnerInfo(View v) {
-        partnerIdPref.set("");
-        edePartnerId.setText(partnerIdPref.get());
-    }
-
-    private void updateSessionData(PartnerNameResponse response) {
-
-        // update preferences
-        partnerIdPref.set(edePartnerId.getText().toString());
-        partnerNamePref.set(response.partnerName());
-        registrationTextPref.set(response.registrationNotificationText());
-        registrationDeadlinePref.set(response.registrationDeadlineDate());
-        partnerTimeoutPref.set((long) response.sessionTimeoutLength());
-        partnerVolunteerTextPref.set(response.partnerVolunteerText());
-
-        // update the event flow listener
-        listener.setState(NEW_SESSION, true);
+        edePartnerId.setText("");
+        viewModel.clearPartnerInfo();
     }
 
     @Override

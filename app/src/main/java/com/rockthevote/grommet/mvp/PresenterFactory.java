@@ -1,6 +1,6 @@
 package com.rockthevote.grommet.mvp;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface PresenterFactory<P extends Presenter> {
     @NonNull P createPresenter();

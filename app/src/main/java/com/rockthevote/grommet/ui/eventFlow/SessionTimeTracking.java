@@ -1,61 +1,48 @@
 package com.rockthevote.grommet.ui.eventFlow;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.f2prateek.rx.preferences2.Preference;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
-import com.rockthevote.grommet.data.api.RegistrationService;
-import com.rockthevote.grommet.data.db.model.Session;
-import com.rockthevote.grommet.data.prefs.CanvasserName;
-import com.rockthevote.grommet.data.prefs.CurrentSessionRowId;
-import com.rockthevote.grommet.data.prefs.DeviceID;
-import com.rockthevote.grommet.data.prefs.EventName;
-import com.rockthevote.grommet.data.prefs.EventZip;
-import com.rockthevote.grommet.data.prefs.PartnerId;
-import com.rockthevote.grommet.data.prefs.PartnerName;
-import com.rockthevote.grommet.data.prefs.PartnerTimeout;
-import com.rockthevote.grommet.ui.misc.AnimatorListenerHelper;
+import com.rockthevote.grommet.data.api.RockyService;
+import com.rockthevote.grommet.data.db.dao.PartnerInfoDao;
+import com.rockthevote.grommet.data.db.dao.RegistrationDao;
+import com.rockthevote.grommet.data.db.dao.SessionDao;
+import com.rockthevote.grommet.data.db.model.SessionStatus;
 import com.rockthevote.grommet.util.Dates;
-import com.squareup.sqlbrite.BriteDatabase;
-
-import java.util.Date;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.disposables.CompositeDisposable;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
-import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.CLOCKED_IN;
-import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.CLOCKED_OUT;
-import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.NEW_SESSION;
+import static com.rockthevote.grommet.data.db.model.SessionStatus.CLOCKED_IN;
+import static com.rockthevote.grommet.data.db.model.SessionStatus.CLOCKED_OUT;
+import static com.rockthevote.grommet.data.db.model.SessionStatus.NEW_SESSION;
 
 public class SessionTimeTracking extends FrameLayout implements EventFlowPage {
-    @Inject BriteDatabase db;
-    @Inject ReactiveLocationProvider locationProvider;
 
-    @Inject @CurrentSessionRowId Preference<Long> currentSessionRowId;
+    @Inject PartnerInfoDao partnerInfoDao;
+    @Inject SessionDao sessionDao;
+    @Inject RegistrationDao registrationDao;
+    @Inject SharedPreferences sharedPreferences;
+    @Inject RockyService rockyService;
 
     @BindView(R.id.ed_canvasser_name) TextView edCanvasserName;
     @BindView(R.id.ed_event_name) TextView edEventName;
@@ -67,17 +54,13 @@ public class SessionTimeTracking extends FrameLayout implements EventFlowPage {
     @BindView(R.id.session_progress_button) Button sessionProgressButton;
     @BindView(R.id.ed_device_id) TextView edDeviceId;
 
-    @Inject @CanvasserName Preference<String> canvasserNamePref;
-    @Inject @EventName Preference<String> eventNamePref;
-    @Inject @EventZip Preference<String> eventZipPref;
-    @Inject @PartnerId Preference<String> partnerIdPref;
-    @Inject @PartnerName Preference<String> partnerNamePref;
-    @Inject @DeviceID Preference<String> deviceIdPref;
-    @Inject @PartnerTimeout Preference<Long> partnerTimeoutPref;
-
-    private CompositeDisposable disposables = new CompositeDisposable();
-
     private EventFlowCallback listener;
+
+    private SessionTimeTrackingViewModel viewModel;
+
+    private Observer<? super SessionStatus> sessionStatusObserver = this::updateUI;
+    private Observer<? super SessionSummaryData> sessionSummaryDataObserver = this::handleSessionSummary;
+    private Observer<? super ClockEvent> clockEventObserver = this::handleClockEvent;
 
     public SessionTimeTracking(Context context) {
         this(context, null);
@@ -102,65 +85,125 @@ public class SessionTimeTracking extends FrameLayout implements EventFlowPage {
         super.onAttachedToWindow();
         if (!isInEditMode()) {
             ButterKnife.bind(this);
-
-            disposables.add(canvasserNamePref.asObservable()
-                    .subscribe(name -> edCanvasserName.setText(name)));
-
-            disposables.add(eventNamePref.asObservable()
-                    .subscribe(name -> edEventName.setText(name)));
-
-            disposables.add(eventZipPref.asObservable()
-                    .subscribe(name -> edEventZip.setText(name)));
-
-            disposables.add(partnerNamePref.asObservable()
-                    .subscribe(name -> edPartnerName.setText(name)));
-
-            disposables.add(deviceIdPref.asObservable()
-                    .subscribe(name -> edDeviceId.setText(name)));
         }
+
+        viewModel = new ViewModelProvider(
+                (AppCompatActivity) getContext(),
+                new SessionTimeTrackingViewModelFactory(
+                        partnerInfoDao,
+                        sessionDao,
+                        registrationDao,
+                        sharedPreferences,
+                        rockyService)
+        ).get(SessionTimeTrackingViewModel.class);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (!isInEditMode()) {
-            disposables.dispose();
-        }
     }
 
     @Override
     public void registerCallbackListener(EventFlowCallback listener) {
         this.listener = listener;
+        registerDataObservers();
+        viewModel.updateSessionStatus();
     }
 
     @Override
     public void unregisterCallbackListener() {
+        unregisterDataObservers();
         listener = null;
     }
 
-    void updateUI(Session.SessionStatus status) {
+    private void registerDataObservers() {
+        viewModel.getSessionData().observe((AppCompatActivity) getContext(), sessionSummaryDataObserver);
+        viewModel.getSessionStatus().observe((AppCompatActivity) getContext(), sessionStatusObserver);
+        viewModel.getClockState().observe((AppCompatActivity) getContext(), clockEventObserver);
+    }
 
-        // we can check for this via the DB and if there are no rows, it's fine
+    private void unregisterDataObservers() {
+        viewModel.getSessionData().removeObserver(sessionSummaryDataObserver);
+        viewModel.getSessionStatus().removeObserver(sessionStatusObserver);
+        viewModel.getClockState().removeObserver(clockEventObserver);
+    }
 
+    private void handleClockEvent(ClockEvent clockState) {
+        if (clockState instanceof ClockEvent.ClockingError) {
+            displayClockEventDialog(((ClockEvent.ClockingError) clockState).getErrorMsgId());
+        } else if (clockState instanceof ClockEvent.Loading) {
+            showClockInSpinner();
+        }
+    }
+
+    private void handleSessionSummary(SessionSummaryData data) {
+        edCanvasserName.setText(data.getCanvasserName());
+        edEventName.setText(data.getOpenTrackingId());
+        edEventZip.setText(data.getPartnerTrackingId());
+        edPartnerName.setText(data.getPartnerName());
+        edDeviceId.setText(data.getDeviceId());
+
+        if (data.getClockInTime() != null) {
+            clockInTime.setText(Dates.formatAs_LocalTimeOfDay(data.getClockInTime()));
+        } else {
+            clockInTime.setText(R.string.time_tracking_default_value);
+        }
+    }
+
+    private void updateUI(SessionStatus status) {
         switch (status) {
-            case CLOCKED_IN:
+            case CLOCKED_IN: {
+
+                editButton.setEnabled(false);
+                clockInButton.setEnabled(true);
                 clockInButton.setSelected(true);
-                Cursor cursor = db.query(Session.SELECT_CURRENT_SESSION);
-                cursor.moveToNext();
-                Session session = Session.MAPPER.call(cursor);
-                cursor.close();
-                clockInTime.setText(Dates.formatAs_LocalTimeOfDay(session.clockInTime()));
+
+                TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
+                hideClockInSpinner();
+                text.setText(R.string.clock_out_text);
+
+                listener.setState(CLOCKED_IN, true);
                 break;
-            default:
+            }
+            case CLOCKED_OUT: {
+                editButton.setEnabled(true);
+                clockInButton.setEnabled(true);
+                clockInButton.setSelected(false);
+
+                TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
+                hideClockInSpinner();
+                text.setText(R.string.clock_in_text);
+
+                listener.setState(CLOCKED_OUT, true);
+                break;
+            }
+            default: {
+                editButton.setEnabled(true);
                 clockInButton.setSelected(false);
                 clockInTime.setText(R.string.time_tracking_default_value);
+                TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
+                text.setText(R.string.clock_in_text);
                 break;
+            }
         }
+    }
 
-        editButton.setEnabled(!clockInButton.isSelected());
-
+    private void hideClockInSpinner() {
+        ProgressBar spinner = (ProgressBar) ((ViewGroup) clockInButton).findViewById(R.id.clock_in_spinner);
         TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
-        text.setText(clockInButton.isSelected() ? R.string.clock_out_text : R.string.clock_in_text);
+
+        spinner.setVisibility(View.GONE);
+        text.setVisibility(View.VISIBLE);
+        clockInButton.setEnabled(true);
+    }
+
+    private void showClockInSpinner() {
+        ProgressBar spinner = (ProgressBar) ((ViewGroup) clockInButton).findViewById(R.id.clock_in_spinner);
+        TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
+
+        text.setVisibility(View.GONE);
+        spinner.setVisibility(View.VISIBLE);
+        clockInButton.setEnabled(false);
     }
 
     @OnClick(R.id.session_progress_button)
@@ -177,124 +220,35 @@ public class SessionTimeTracking extends FrameLayout implements EventFlowPage {
 
     @OnClick(R.id.clock_in_button)
     public void onClickClockIn(View button) {
-
         if (button.isSelected()) {
+
             new AlertDialog.Builder(getContext())
                     .setMessage(R.string.clock_out_dialog_text)
                     .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
-                        clockOut();
+                        viewModel.clockOut();
                     })
                     .setNegativeButton(R.string.dialog_no,
                             (dialogInterface, i) -> dialogInterface.dismiss())
                     .create()
                     .show();
         } else {
-
-            TextView text = (TextView) ((ViewGroup) button).getChildAt(0);
-            AnimatorSet animSet = new AnimatorSet();
-
-            int width = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    getResources().getDimension(R.dimen.clock_in_transition_width),
-                    getResources().getDisplayMetrics());
-
-            ValueAnimator shrinkAnim = ValueAnimator.ofInt(button.getMeasuredWidth(), width);
-
-            shrinkAnim.addUpdateListener(valueAnimator -> {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = button.getLayoutParams();
-                layoutParams.width = val;
-                button.requestLayout();
-            });
-
-            shrinkAnim.addListener(new AnimatorListenerHelper() {
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    clockIn();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-                    button.setSelected(!button.isSelected());
-                    text.setText(button.isSelected() ? R.string.clock_out_text : R.string.clock_in_text);
-                }
-            });
-
-            ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(text, "alpha", 1f, 0f);
-            ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(text, "alpha", 0f, 1f);
-
-            // this is 500 ms each way, so with a "reverse" it's a total of 1 second
-            shrinkAnim.setDuration(500);
-            shrinkAnim.setRepeatMode(ValueAnimator.REVERSE);
-            shrinkAnim.setRepeatCount(1);
-
-            fadeOutAnim.setDuration(200);
-            fadeInAnim.setDuration(200);
-
-            animSet.play(fadeOutAnim)
-                    .with(shrinkAnim);
-            animSet.play(fadeInAnim)
-                    .after(fadeOutAnim)
-                    .after(750); // wait to fade in so we don't get jittery text
-
-            animSet.start();
+            viewModel.clockIn();
         }
     }
 
-    private void clockIn() {
+    private void displayClockEventDialog(@StringRes int msgId) {
+        TextView text = (TextView) ((ViewGroup) clockInButton).getChildAt(0);
+        ProgressBar spinner = (ProgressBar) ((ViewGroup) clockInButton).findViewById(R.id.clock_in_spinner);
 
-        // create and update session info
-        Session.Builder builder = new Session.Builder()
-                .sessionId(UUID.randomUUID().toString())
-                .openTrackingId(eventNamePref.get())
-                .partnerTrackingId(eventZipPref.get())
-                .canvasserName(canvasserNamePref.get())
-                .sessionTimeout(partnerTimeoutPref.get())
-                .clockInTime(new Date())
-                .deviceId(deviceIdPref.get())
-                .sessionStatus(CLOCKED_IN);
+        hideClockInSpinner();
+        clockInButton.setEnabled(true);
 
-        long rowId = db.insert(Session.TABLE, builder.build());
-        currentSessionRowId.set(rowId);
-
-        locationProvider.getLastKnownLocation()
-                .singleOrDefault(null)
-                .subscribe(location -> {
-                    Session.Builder locBuilder = new Session.Builder();
-
-                    if (null != location) {
-                        locBuilder
-                                .latitude((long) location.getLatitude())
-                                .longitude((long) location.getLongitude());
-
-                        db.update(Session.TABLE,
-                                locBuilder.build(),
-                                Session._ID + " = ? ", String.valueOf(currentSessionRowId.get()));
-                    }
-                });
-
-        updateUI(CLOCKED_IN);
-
-        // try to register the clock in
-        Intent regService = new Intent(getContext(), RegistrationService.class);
-        getContext().startService(regService);
-
-
-    }
-
-    private void clockOut() {
-        Session.Builder builder = new Session.Builder()
-                .clockOutTime(new Date())
-                .sessionStatus(CLOCKED_OUT);
-
-        db.update(Session.TABLE,
-                builder.build(),
-                Session._ID + " = ? ", String.valueOf(currentSessionRowId.get()));
-
-        listener.setState(CLOCKED_OUT, true);
-
-        // try to register the clock out
-        Intent regService = new Intent(getContext(), RegistrationService.class);
-        getContext().startService(regService);
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.error_title)
+                .setIcon(R.drawable.ic_warning_24dp)
+                .setMessage(msgId)
+                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> dialogInterface.dismiss())
+                .create()
+                .show();
     }
 }

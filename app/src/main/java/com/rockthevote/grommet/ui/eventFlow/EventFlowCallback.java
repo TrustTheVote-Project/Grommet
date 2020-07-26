@@ -1,6 +1,6 @@
 package com.rockthevote.grommet.ui.eventFlow;
 
-import com.rockthevote.grommet.data.db.model.Session;
+import com.rockthevote.grommet.data.db.model.SessionStatus;
 
 /**
  * Created by Mechanical Man, LLC on 7/19/17. Grommet
@@ -8,5 +8,5 @@ import com.rockthevote.grommet.data.db.model.Session;
 
 public interface EventFlowCallback {
 
-    void setState(Session.SessionStatus state, boolean smoothScroll);
+    void setState(SessionStatus state, boolean smoothScroll);
 }

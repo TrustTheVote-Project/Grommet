@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:layout_height="@dimen/detail_backdrop_height">
 
@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/title_time_tracking"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
 
     </LinearLayout>
 
@@ -197,14 +197,14 @@
             android:textColor="@color/colorSecondaryText"
             android:textStyle="bold"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/session_progress_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_marginStart="66dp"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_insert_chart_black_24dp"
+            app:icon="@drawable/ic_insert_chart_black_24dp"
+            app:iconTint="@color/colorSecondaryText"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/content_area_padding"
             android:paddingTop="@dimen/content_area_padding"
@@ -245,11 +245,20 @@
             android:textAllCaps="true"
             android:textColor="#FFFFFF"/>
 
+        <ProgressBar
+            android:id="@+id/clock_in_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:padding="5dp"
+            android:visibility="gone"
+            />
+
     </FrameLayout>
 
     <Button
         android:id="@+id/event_details_static_edit"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

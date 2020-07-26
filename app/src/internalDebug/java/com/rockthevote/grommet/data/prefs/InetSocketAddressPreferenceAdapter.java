@@ -1,7 +1,7 @@
 package com.rockthevote.grommet.data.prefs;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.f2prateek.rx.preferences2.Preference;
 import com.rockthevote.grommet.util.Strings;

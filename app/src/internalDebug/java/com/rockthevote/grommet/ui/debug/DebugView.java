@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
@@ -19,7 +18,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.f2prateek.rx.preferences2.Preference;
-import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
 import com.rockthevote.grommet.BuildConfig;
 import com.rockthevote.grommet.R;
@@ -35,10 +33,12 @@ import com.rockthevote.grommet.data.NetworkFailurePercent;
 import com.rockthevote.grommet.data.NetworkVariancePercent;
 import com.rockthevote.grommet.data.api.MockRockyService;
 import com.rockthevote.grommet.data.prefs.InetSocketAddressPreferenceAdapter;
+import com.rockthevote.grommet.ui.MainActivity;
 import com.rockthevote.grommet.ui.debug.ContextualDebugActions.DebugAction;
 import com.rockthevote.grommet.ui.logs.LogsDialog;
 import com.rockthevote.grommet.ui.misc.EnumAdapter;
 import com.rockthevote.grommet.util.Keyboards;
+import com.rockthevote.grommet.util.ProcessPhoenix;
 import com.rockthevote.grommet.util.Strings;
 import com.squareup.leakcanary.internal.DisplayLeakActivity;
 
@@ -55,15 +55,18 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import androidx.appcompat.app.AlertDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.mock.NetworkBehavior;
+import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
-import static butterknife.ButterKnife.findById;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public final class DebugView extends FrameLayout {
@@ -417,7 +420,7 @@ public final class DebugView extends FrameLayout {
         final int originalSelection = networkProxyAddress.isSet() ? ProxyAdapter.PROXY : ProxyAdapter.NONE;
 
         View view = LayoutInflater.from(app).inflate(R.layout.debug_drawer_network_proxy, null);
-        final EditText hostView = findById(view, R.id.debug_drawer_network_proxy_host);
+        final EditText hostView = view.findViewById(R.id.debug_drawer_network_proxy_host);
 
         if (networkProxyAddress.isSet()) {
             String host = networkProxyAddress.get().getHostName();
@@ -452,8 +455,13 @@ public final class DebugView extends FrameLayout {
 
     private void setEndpointAndRelaunch(String endpoint) {
         Timber.d("Setting network endpoint to %s", endpoint);
+        networkEndpoint.asObservable()
+                .observeOn(Schedulers.io())
+                .delay(1000, MILLISECONDS)
+                .subscribe(s -> {
+                    ProcessPhoenix.triggerRebirth(getContext());
+                });
         networkEndpoint.set(endpoint);
 
-        ProcessPhoenix.triggerRebirth(getContext());
     }
 }

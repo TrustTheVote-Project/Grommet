@@ -74,6 +74,9 @@
     <string name="section_label_assistant_address">Ayudante Dirección</string>
     <string name="section_label_assistant_contact_info">Información de Contacto de Ayudante</string>
     <string name="phone_format_error">El número de teléfono que ingresó no es válido.</string>
+    <string name="address_format_error">dirección residencial inválida</string>
+    <string name="city_format_error">ciudad inválida</string>
+    <string name="name_format_error">nombre inválido</string>
     <string name="label_email">Dirección de Email</string>
     <string name="label_phone">Número de Teléfono</string>
     <string name="label_phone_type">Tipo</string>

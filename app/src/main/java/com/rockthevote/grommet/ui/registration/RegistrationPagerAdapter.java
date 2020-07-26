@@ -2,13 +2,18 @@ package com.rockthevote.grommet.ui.registration;
 
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.rockthevote.grommet.R;
+import com.rockthevote.grommet.ui.registration.assistance.AssistantInfoFragment;
+import com.rockthevote.grommet.ui.registration.name.NewRegistrantFragment;
+import com.rockthevote.grommet.ui.registration.personal.AdditionalInfoFragment;
+import com.rockthevote.grommet.ui.registration.address.PersonalInfoFragment;
+import com.rockthevote.grommet.ui.registration.review.ReviewAndConfirmFragment;
 
 public class RegistrationPagerAdapter extends FragmentPagerAdapter {
 

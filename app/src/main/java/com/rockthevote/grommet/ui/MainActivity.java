@@ -2,53 +2,43 @@ package com.rockthevote.grommet.ui;
 
 import android.Manifest;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v13.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.f2prateek.rx.preferences2.Preference;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.rockthevote.grommet.R;
-import com.rockthevote.grommet.data.HockeyAppHelper;
 import com.rockthevote.grommet.data.Injector;
-import com.rockthevote.grommet.data.api.RegistrationService;
-import com.rockthevote.grommet.data.db.model.RockyRequest;
-import com.rockthevote.grommet.data.db.model.Session;
-import com.rockthevote.grommet.data.prefs.CanvasserName;
-import com.rockthevote.grommet.data.prefs.CurrentRockyRequestId;
-import com.rockthevote.grommet.data.prefs.EventName;
-import com.rockthevote.grommet.data.prefs.EventZip;
-import com.rockthevote.grommet.data.prefs.PartnerId;
+import com.rockthevote.grommet.data.api.RockyService;
+import com.rockthevote.grommet.data.db.dao.RegistrationDao;
+import com.rockthevote.grommet.ui.eventFlow.EventFlowWizard;
 import com.rockthevote.grommet.ui.registration.RegistrationActivity;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.legacy.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
+import kotlin.Unit;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.rockthevote.grommet.data.db.model.RockyRequest.Status.FORM_COMPLETE;
-import static com.rockthevote.grommet.data.db.model.RockyRequest.Status.IN_PROGRESS;
-import static com.rockthevote.grommet.data.db.model.Session.SessionStatus.CLOCKED_IN;
 
 public final class MainActivity extends BaseActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
@@ -57,79 +47,121 @@ public final class MainActivity extends BaseActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.main_content) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.pending_registrations) TextView pendingRegistrations;
+    @BindView(R.id.failed_registrations_container) LinearLayout failedRegistrationsContainer;
+    @BindView(R.id.failed_registrations) TextView failedRegistrations;
     @BindView(R.id.upload) Button upploadButton;
-
-    @Inject @PartnerId Preference<String> partnerIdPref;
-
-    @Inject @CanvasserName Preference<String> canvasserNamePref;
-
-    @Inject @EventName Preference<String> eventNamePref;
-
-    @Inject @EventZip Preference<String> eventZipPref;
-
-    @Inject @CurrentRockyRequestId Preference<Long> currentRockyRequestId;
+    @BindView(R.id.event_flow_wizard) EventFlowWizard eventFlowWizard;
 
     @Inject ViewContainer viewContainer;
 
-    @Inject BriteDatabase db;
+    @Inject FusedLocationProviderClient locationProvider;
 
-    @Inject ReactiveLocationProvider locationProvider;
+    @Inject RockyService rockyService;
 
-    @Inject HockeyAppHelper hockeyAppHelper;
+    @Inject RegistrationDao registrationDao;
 
-    private CompositeSubscription subscriptions;
+    @Inject SharedPreferences sharedPreferences;
+
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.obtain(this).inject(this);
 
-        View view = getLayoutInflater().inflate(R.layout.activity_main, getContentView());
+        View view = getLayoutInflater().inflate(R.layout.activity_main, getContentView(), true);
         ButterKnife.bind(this, view);
         setSupportActionBar(toolbar);
         requestGPSPermission();
-        hockeyAppHelper.checkForUpdates(this);
 
+        viewModel = new ViewModelProvider(
+                this,
+                new MainActivityViewModelFactory(rockyService, registrationDao, sharedPreferences)
+        ).get(MainActivityViewModel.class);
 
+        observeState();
+    }
+
+    private void observeState() {
+
+        viewModel.getErrorStream().observe(this, error -> {
+            if (error instanceof MainActivityError.UploadRegistrationError) {
+                int errorMessage = ((MainActivityError.UploadRegistrationError) error).getStringMessageId();
+                showErrorMessageDialog(errorMessage);
+            }
+        });
+
+        viewModel.getState().observe(this, mainActivityState -> {
+
+            // Reset base states
+            upploadButton.setEnabled(false);
+            failedRegistrationsContainer.setVisibility(View.GONE);
+            failedRegistrations.setText("");
+
+            if (mainActivityState instanceof MainActivityState.Content) {
+                MainActivityState.Content content = (MainActivityState.Content) mainActivityState;
+
+                String pendingUploads = String.format(
+                        Locale.getDefault(),
+                        "%d",
+                        content.getPendingUploads()
+                );
+
+                pendingRegistrations.setText(pendingUploads);
+
+                if (content.getFailedUploads() > 0 || content.getPendingUploads() > 0) {
+                    upploadButton.setEnabled(true);
+                } else {
+                    upploadButton.setEnabled(false);
+                }
+
+                if (content.getFailedUploads() > 0) {
+                    failedRegistrationsContainer.setVisibility(View.VISIBLE);
+
+                    String failedUploads = String.format(
+                            Locale.getDefault(),
+                            "%d",
+                            content.getFailedUploads()
+                    );
+
+                    failedRegistrations.setText(failedUploads);
+                }
+
+            } else if (mainActivityState instanceof MainActivityState.Loading) {
+                upploadButton.setEnabled(false);
+            } else if (mainActivityState instanceof MainActivityState.Init) {
+                viewModel.refreshPendingUploads();
+            } else if (mainActivityState instanceof MainActivityState.Error) {
+                /*
+                    Right now, if there's an error, we do nothing. The "UPLOAD" button will be
+                    disabled because that's the default, but will be re-enabled when app restarts
+                    because VM state is not retained. We need guidance on error handling to
+                    implement any changes here
+                 */
+                // TODO: 18 July 2020, Still need guidance on error handling behavior here
+            }
+        });
+    }
+
+    /**
+     * Show an error message dialog.
+     *
+     * @param errorMessage StringRes error message value
+     */
+    private void showErrorMessageDialog(@StringRes int errorMessage) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.error_title)
+                .setIcon(R.drawable.ic_warning_24dp)
+                .setMessage(errorMessage)
+                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> dialogInterface.dismiss())
+                .create()
+                .show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        hockeyAppHelper.checkForCrashes(this);
-
-        subscriptions = new CompositeSubscription();
-//
-        // check for registrations to upload
-        subscriptions.add(db.createQuery(RockyRequest.TABLE, RockyRequest.COUNT_BY_STATUS, FORM_COMPLETE.toString())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(query -> {
-                    Cursor cursor = query.run();
-                    try {
-                        if (cursor.moveToNext()) {
-                            int count = cursor.getInt((0));
-                            this.pendingRegistrations.setText(String.valueOf(count));
-
-                            upploadButton.setEnabled(count > 0);
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                }));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        hockeyAppHelper.unRegister();
-        subscriptions.unsubscribe();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        hockeyAppHelper.unRegister();
+        viewModel.refreshPendingUploads();
     }
 
     private void requestGPSPermission() {
@@ -155,29 +187,28 @@ public final class MainActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     public void onClick(View v) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        viewModel.asyncCanRegister(this::canRegister, this::cantRegister);
+    }
+
+    private Unit canRegister() {
+        startActivity(new Intent(this, RegistrationActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
+        return Unit.INSTANCE;
+    }
+
+    private Unit cantRegister() {
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.clock_in_alert_title)
                 .setIcon(R.drawable.ic_timer_black_24dp)
                 .setMessage(R.string.clock_in_alert_message)
                 .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
                 })
-                .create();
+                .create()
+                .show();
 
-        Cursor cursor = db.query(Session.SELECT_CURRENT_SESSION);
-        int rows = cursor.getCount();
-        if (rows == 0) {
-            dialog.show();
-        } else {
-            cursor.moveToNext();
-            Session session = Session.MAPPER.call(cursor);
-            if(session.sessionStatus() == CLOCKED_IN){
-                createNewVoterRecord(session);
-            } else {
-                dialog.show();
-            }
-        }
-        cursor.close();
+        return Unit.INSTANCE;
     }
 
     /**
@@ -188,54 +219,7 @@ public final class MainActivity extends BaseActivity {
      */
     @OnClick(R.id.upload)
     public void onClickUpload(View v) {
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            Intent regService = new Intent(this, RegistrationService.class);
-            startService(regService);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.check_wifi)
-                    .setIcon(R.drawable.ic_warning_24dp)
-                    .setMessage(R.string.no_wifi_upload_message)
-                    .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
-                    .create()
-                    .show();
-
-
-        }
-
-    }
-
-
-    private void createNewVoterRecord(Session session) {
-        locationProvider.getLastKnownLocation()
-                .singleOrDefault(null)
-                .subscribe(location -> {
-                    RockyRequest.Builder builder = new RockyRequest.Builder()
-                            .status(IN_PROGRESS)
-                            .partnerId(partnerIdPref.get())
-                            .partnerTrackingId(eventZipPref.get())
-                            .sourceTrackingId(session.sourceTrackingId())
-                            .openTrackingId(eventNamePref.get())
-                            .partnerOptInSMS(true) // override database default so we don't have to perform a migration
-                            .generateDate();
-
-                    if (null != location) {
-                        builder
-                                .latitude((long) location.getLatitude())
-                                .longitude((long) location.getLongitude());
-                    }
-
-                    long rockyRequestRowId = db.insert(RockyRequest.TABLE, builder.build());
-                    currentRockyRequestId.set(rockyRequestRowId);
-                    startActivity(new Intent(this, RegistrationActivity.class),
-                            ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-                });
+        viewModel.uploadRegistrations();
     }
 
     @Override

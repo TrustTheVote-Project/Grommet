@@ -12,12 +12,12 @@
             android:translateX="10.000000"
             android:translateY="33.000000">
             <path
-                android:fillColor="@android:color/black"
+                android:fillColor="#000000"
                 android:fillType="evenOdd"
                 android:strokeWidth="1"
                 android:pathData="M 2.5 0 C 3.88071187458 0 5 1.11928812542 5 2.5 C 5 3.88071187458 3.88071187458 5 2.5 5 C 1.11928812542 5 0 3.88071187458 0 2.5 C 0 1.11928812542 1.11928812542 0 2.5 0 Z" />
             <path
-                android:fillColor="@android:color/black"
+                android:fillColor="#000000"
                 android:fillType="evenOdd"
                 android:strokeWidth="1"
                 android:pathData="M 2.5 15 C 3.88071187458 15 5 16.1192881254 5 17.5 C 5 18.8807118746 3.88071187458 20 2.5 20 C 1.11928812542 20 0 18.8807118746 0 17.5 C 0 16.1192881254 1.11928812542 15 2.5 15 Z" />

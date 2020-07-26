@@ -1,10 +1,13 @@
 // Manifest version information!
 def versionMajor = 3
-def versionMinor = 0
-def versionPatch = 1
+def versionMinor = 1
+def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 repositories {
     mavenCentral()
@@ -38,7 +41,7 @@ def gitTimestamp() {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     signingConfigs {
         grommet {
@@ -57,8 +60,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 24
+        targetSdkVersion 29
 //        multiDexEnabled true
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
@@ -70,6 +73,8 @@ android {
         signingConfig signingConfigs.grommet
 
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "9aa043263d8e4edb902b860bf5098acb"]
+
+        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     }
 
     buildTypes {
@@ -93,10 +98,6 @@ android {
         production {
             dimension "default"
             applicationId 'com.rockethevote.grommet'
-        }
-        practice {
-            dimension "default"
-            applicationId 'com.rockthevote.grommet.practice'
         }
     }
 
@@ -156,10 +157,22 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+
+    viewBinding {
+        enabled = true
+    }
+
+    kapt {
+        generateStubs = true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:${supportLibVersion}"
+    resolutionStrategy.force "com.android.support:support-annotations:26.0.0"
 }
 
 // TODO remove eventually: http://b.android.com/162285
@@ -173,68 +186,97 @@ configurations {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:support-v4:${supportLibVersion}"
-    implementation "com.android.support:support-v13:${supportLibVersion}"
-    implementation "com.android.support:support-annotations:${supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
-    implementation "com.android.support:cardview-v7:${supportLibVersion}"
-    implementation "com.android.support:design:${supportLibVersion}"
-    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.googlecode.libphonenumber:libphonenumber:7.5.2'
+    implementation 'androidx.preference:preference:1.1.1'
 
-    annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.2'
+    // Room
+    def roomVersion = "2.2.5"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+    testImplementation "androidx.room:room-testing:2.2.5"
+
+    kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     internalDebugImplementation 'com.squareup.retrofit2:retrofit-mock:2.2.0'
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.0.1'
 
-    compileOnly 'com.google.auto.value:auto-value:1.5.2'
-    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
-    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
-    annotationProcessor 'com.ryanharter.auto.value:auto-value-moshi:0.4.0-rc2'
-    compileOnly 'com.ryanharter.auto.value:auto-value-moshi:0.4.0-rc2'
+    compileOnly "javax.annotation:jsr250-api:1.0"
+    kapt 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    kapt 'com.ryanharter.auto.value:auto-value-moshi:0.4.0'
 
-    internalDebugImplementation 'com.jakewharton:process-phoenix:1.0.2'
+    compileOnly 'com.ryanharter.auto.value:auto-value-moshi:0.4.0'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'
-    internalReleaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-    productionReleaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
-    practiceReleaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
+    def moshiVersion = "1.9.2"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+
+    def leakCanaryVersion = "1.6.2"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    internalReleaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    productionReleaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    practiceReleaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     internalImplementation 'com.mattprecious.telescope:telescope:2.1.0'
 
     internalReleaseImplementation 'net.hockeyapp.android:HockeySDK:4.1.5'
 
-    androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     // TODO https://code.google.com/p/android-test-kit/issues/detail?id=157
-    androidTestImplementation 'com.android.support.test:runner:0.5'
-    androidTestImplementation 'com.android.support.test:rules:0.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'com.squareup.spoon:spoon-client:1.2.0'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'com.google.truth:truth:0.27'
-    implementation 'com.squareup.dagger:dagger:1.2.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.4'
+
+    implementation 'com.squareup.dagger:dagger:1.2.5'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.7'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.1.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.8.1'
     implementation 'com.github.gcacace:signature-pad:1.2.0'
-    implementation 'com.jakewharton:butterknife:8.0.1'
-    implementation 'com.jakewharton.timber:timber:4.0.1'
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.jakewharton.byteunits:byteunits:0.9.1'
     implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    implementation 'pl.charmas.android:android-reactive-location:0.9@aar'
-    implementation 'com.squareup.sqlbrite:sqlbrite:0.6.3'
     implementation 'io.reactivex:rxjava:1.1.8'
-    implementation 'io.reactivex:rxandroid:1.0.1'
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.3'
-    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    implementation 'io.reactivex:rxandroid:1.1.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.1-beta1'
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+    implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
+
+    // Lifecycle
+    def lifeCycleVersion = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:${lifeCycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifeCycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${lifeCycleVersion}"
 
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 
-    implementation 'com.google.firebase:firebase-core:11.8.0'
-}
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-apply plugin: 'com.google.gms.google-services'
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
+
+    // Ktx
+    def lifecycle_version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+}

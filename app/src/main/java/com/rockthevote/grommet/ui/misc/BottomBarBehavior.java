@@ -2,10 +2,10 @@ package com.rockthevote.grommet.ui.misc;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v13.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.legacy.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorListener;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Interpolator;

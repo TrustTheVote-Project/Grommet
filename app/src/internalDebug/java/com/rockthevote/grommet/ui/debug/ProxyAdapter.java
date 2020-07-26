@@ -11,8 +11,6 @@ import com.rockthevote.grommet.ui.misc.BindableAdapter;
 
 import java.net.InetSocketAddress;
 
-import static butterknife.ButterKnife.findById;
-
 class ProxyAdapter extends BindableAdapter<String> {
   public static final int NONE = 0;
   public static final int PROXY = 1;
@@ -50,7 +48,7 @@ class ProxyAdapter extends BindableAdapter<String> {
   }
 
   @Override public void bindView(String item, int position, View view) {
-    TextView tv = findById(view, android.R.id.text1);
+    TextView tv = view.findViewById(android.R.id.text1);
     tv.setText(item);
   }
 

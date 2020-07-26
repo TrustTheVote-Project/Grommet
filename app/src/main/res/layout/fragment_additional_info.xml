@@ -57,7 +57,7 @@
         android:paddingBottom="@dimen/content_area_padding"
         app:errorEnabled="false"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_other_party"
         android:layout_width="0dip"
         android:layout_columnSpan="2"
@@ -69,7 +69,7 @@
         tools:visibility="visible"
         >
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/other_party_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:maxLength="50"
             android:maxLines="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/political_party_change_textbox"
@@ -89,7 +89,7 @@
         android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/political_party_change"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_penn_dot"
         android:layout_width="0dip"
         android:layout_columnSpan="2"
@@ -99,7 +99,7 @@
         app:errorEnabled="false"
         >
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/penn_dot_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
             android:maxLength="8"
             android:maxLines="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="0dp"
@@ -131,7 +131,7 @@
         android:text="@string/label_does_not_have_penn_dot"/>
 
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_ssn_last_four"
         android:layout_width="0dip"
         android:layout_columnSpan="2"
@@ -141,7 +141,7 @@
         app:errorEnabled="false"
         >
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ssn_last_four_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             android:maxLength="4"
             android:maxLines="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/ssn_last_four_checkbox"
@@ -190,7 +190,7 @@
         android:layout_marginStart="@dimen/content_margin"
         android:text="@string/label_email_confirmation"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
         android:layout_marginStart="@dimen/content_margin"
         app:errorEnabled="false">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
             android:maxLength="50"
             android:maxLines="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/email_opt_in"
@@ -224,7 +224,7 @@
         android:paddingTop="@dimen/content_area_padding"
         tools:text="@string/label_receive_email"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_phone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
         android:layout_marginStart="@dimen/content_margin"
         app:errorEnabled="false">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/list_item_height"
@@ -241,7 +241,7 @@
             android:inputType="phone"
             android:maxLines="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.rockthevote.grommet.ui.misc.BetterSpinner
         android:id="@+id/spinner_phone_type"

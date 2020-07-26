@@ -2,7 +2,7 @@ package com.rockthevote.grommet.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.f2prateek.rx.preferences.Preference;
-import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.f2prateek.rx.preferences.CustomRxSharedPreferences;
 import com.mattprecious.telescope.Lens;
 import com.mattprecious.telescope.TelescopeLayout;
 import com.rockthevote.grommet.R;
@@ -32,7 +32,7 @@ public final class TelescopeViewContainer implements ViewContainer {
     private final Preference<Boolean> seenTelescopeDialog;
 
     @Inject
-    public TelescopeViewContainer(LumberYard lumberYard, RxSharedPreferences preferences) {
+    public TelescopeViewContainer(LumberYard lumberYard, CustomRxSharedPreferences preferences) {
         this.lumberYard = lumberYard;
         this.seenTelescopeDialog = preferences.getBoolean("internal-seen-telescope-dialog", false);
     }

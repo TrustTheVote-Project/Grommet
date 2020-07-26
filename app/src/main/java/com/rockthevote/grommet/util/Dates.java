@@ -1,6 +1,6 @@
 package com.rockthevote.grommet.util;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.text.ParseException;

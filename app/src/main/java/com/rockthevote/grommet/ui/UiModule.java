@@ -1,19 +1,19 @@
 package com.rockthevote.grommet.ui;
 
 
-import com.rockthevote.grommet.ui.eventFlow.EventDetailsEditable;
+import com.rockthevote.grommet.ui.eventFlow.EventCanvasserInfo;
 import com.rockthevote.grommet.ui.eventFlow.EventFlowWizard;
 import com.rockthevote.grommet.ui.eventFlow.EventPartnerLogin;
 import com.rockthevote.grommet.ui.eventFlow.SessionProgressDialogFragment;
 import com.rockthevote.grommet.ui.eventFlow.SessionSummary;
 import com.rockthevote.grommet.ui.eventFlow.SessionTimeTracking;
-import com.rockthevote.grommet.ui.registration.AdditionalInfoFragment;
-import com.rockthevote.grommet.ui.registration.AssistantInfoFragment;
-import com.rockthevote.grommet.ui.registration.NewRegistrantFragment;
-import com.rockthevote.grommet.ui.registration.PersonalInfoFragment;
+import com.rockthevote.grommet.ui.registration.personal.AdditionalInfoFragment;
+import com.rockthevote.grommet.ui.registration.assistance.AssistantInfoFragment;
+import com.rockthevote.grommet.ui.registration.name.NewRegistrantFragment;
+import com.rockthevote.grommet.ui.registration.address.PersonalInfoFragment;
 import com.rockthevote.grommet.ui.registration.RegistrationActivity;
 import com.rockthevote.grommet.ui.registration.RegistrationCompleteDialogFragment;
-import com.rockthevote.grommet.ui.registration.ReviewAndConfirmFragment;
+import com.rockthevote.grommet.ui.registration.review.ReviewAndConfirmFragment;
 import com.rockthevote.grommet.ui.views.AddressView;
 import com.rockthevote.grommet.ui.views.NameView;
 
@@ -37,7 +37,7 @@ import dagger.Provides;
                 ReviewAndConfirmFragment.class,
                 AddressView.class,
                 NameView.class,
-                EventDetailsEditable.class,
+                EventCanvasserInfo.class,
                 SessionTimeTracking.class,
                 EventFlowWizard.class,
                 SessionSummary.class,

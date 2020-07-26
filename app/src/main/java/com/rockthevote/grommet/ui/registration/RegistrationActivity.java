@@ -1,11 +1,7 @@
 package com.rockthevote.grommet.ui.registration;
 
 import android.app.AlertDialog;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,42 +11,42 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.f2prateek.rx.preferences2.Preference;
+import com.google.android.material.appbar.AppBarLayout;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
-import com.rockthevote.grommet.data.db.model.Name;
-import com.rockthevote.grommet.data.db.model.RockyRequest;
-import com.rockthevote.grommet.data.db.model.Session;
-import com.rockthevote.grommet.data.prefs.CurrentRockyRequestId;
-import com.rockthevote.grommet.data.prefs.CurrentSessionRowId;
+import com.rockthevote.grommet.data.db.dao.PartnerInfoDao;
+import com.rockthevote.grommet.data.db.dao.RegistrationDao;
+import com.rockthevote.grommet.data.db.dao.SessionDao;
 import com.rockthevote.grommet.ui.BaseActivity;
 import com.rockthevote.grommet.ui.ViewContainer;
 import com.rockthevote.grommet.ui.misc.StepperTabLayout;
 import com.rockthevote.grommet.util.KeyboardUtil;
 import com.rockthevote.grommet.util.LocaleUtils;
-import com.rockthevote.grommet.util.Strings;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
-import static android.support.v4.view.ViewPager.OnPageChangeListener;
-import static com.rockthevote.grommet.data.db.model.RockyRequest.Status.ABANDONED;
+import static androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 
 public class RegistrationActivity extends BaseActivity {
 
     @Inject ViewContainer viewContainer;
 
-    @Inject BriteDatabase db;
-    @Inject @CurrentRockyRequestId Preference<Long> rockyRequestRowId;
-    @Inject @CurrentSessionRowId Preference<Long> currentSessionRowId;
+    @Inject RegistrationDao registrationDao;
+
+    @Inject SessionDao sessionDao;
+
+    @Inject PartnerInfoDao partnerInfoDao;
 
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -69,6 +65,8 @@ public class RegistrationActivity extends BaseActivity {
         LocaleUtils.updateConfig(this);
     }
 
+    private RegistrationViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // inside your activity (if you did not enable transitions in your theme)
@@ -78,6 +76,11 @@ public class RegistrationActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         Injector.obtain(this).inject(this);
+
+        viewModel = new ViewModelProvider(
+                this,
+                new RegistrationViewModelFactory(registrationDao, sessionDao, partnerInfoDao)
+        ).get(RegistrationViewModel.class);
 
         ViewGroup contentView = getContentView();
         getLayoutInflater().inflate(R.layout.activity_registration, contentView);
@@ -165,38 +168,7 @@ public class RegistrationActivity extends BaseActivity {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.cancel_dialog_message)
                 .setPositiveButton(R.string.dialog_yes, ((dialog, i) -> {
-                    // set the application to abandoned so it gets cleaned up
-                    db.update(
-                            RockyRequest.TABLE,
-                            new RockyRequest.Builder()
-                                    .status(ABANDONED)
-                                    .build(),
-                            RockyRequest._ID + " = ? ",
-                            String.valueOf(rockyRequestRowId.get()));
-
-                    // update abandoned count for the session, only if the voter entered some data
-                    Cursor nameCursor = db.query(Name.SELECT_BY_TYPE,
-                            String.valueOf(rockyRequestRowId.get()),
-                            Name.Type.CURRENT_NAME.toString());
-
-                    if (nameCursor.moveToNext()) {
-                        Name name = Name.MAPPER.call(nameCursor);
-                        if (!Strings.isBlank(name.firstName())) {
-                            nameCursor.close();
-                            Cursor sessionCursor =
-                                    db.query(Session.SELECT_CURRENT_SESSION);
-
-                            if (sessionCursor.moveToNext()) {
-                                Session session = Session.MAPPER.call(sessionCursor);
-                                db.update(Session.TABLE,
-                                        new Session.Builder()
-                                                .totalAbandond(session.totalAbandoned() + 1)
-                                                .build(), Session._ID + " = ? ",
-                                        String.valueOf(currentSessionRowId.get()));
-                            }
-                            sessionCursor.close();
-                        }
-                    }
+                    viewModel.incrementAbandonedCount();
 
                     LocaleUtils.setLocale(new Locale("en"));
                     finish();
@@ -211,7 +183,8 @@ public class RegistrationActivity extends BaseActivity {
     public void onPreviousClick(View v) {
         int curPage = viewPager.getCurrentItem();
         if (curPage > 0) {
-            viewPager.setCurrentItem(curPage - 1);
+            int previousItem = curPage - 1;
+            viewPager.setCurrentItem(previousItem);
         }
     }
 
@@ -219,13 +192,18 @@ public class RegistrationActivity extends BaseActivity {
     public void onNextClick(View v) {
         int curPage = viewPager.getCurrentItem();
         if (curPage < adapter.getCount() - 1) {
-            ((BaseRegistrationFragment) adapter.getItem(curPage))
+            BaseRegistrationFragment previousFragment =
+                    ((BaseRegistrationFragment) adapter.getItem(curPage));
+
+            previousFragment
                     .verify()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(isValid -> {
                         if (isValid) {
                             tabLayout.enableTabAtPosition(curPage + 1);
                             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+
+                            previousFragment.storeState();
                         }
                     });
         }
@@ -245,11 +223,15 @@ public class RegistrationActivity extends BaseActivity {
 
             //only check if we're swiping right
             if (position - 1 == prevPage) {
-                ((BaseRegistrationFragment) adapter.getItem(prevPage))
+                BaseRegistrationFragment previousFragment =
+                        ((BaseRegistrationFragment) adapter.getItem(prevPage));
+
+                previousFragment
                         .verify()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(isValid -> {
                             if (isValid) {
+                                previousFragment.storeState();
                                 tabLayout.enableTabAtPosition(position);
                                 prevPage = position;
                             } else {

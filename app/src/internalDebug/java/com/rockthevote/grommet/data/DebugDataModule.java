@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.f2prateek.rx.preferences2.Preference;
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
-import com.rockthevote.grommet.IsInstrumentationTest;
+import com.f2prateek.rx.preferences2.CustomRxSharedPreferences;
+import com.rockthevote.grommet.GrommetApp;
 import com.rockthevote.grommet.data.api.DebugApiModule;
 import com.rockthevote.grommet.data.prefs.InetSocketAddressPreferenceAdapter;
 
@@ -19,6 +19,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.preference.PreferenceManager;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -27,7 +28,8 @@ import okhttp3.OkHttpClient;
         includes = DebugApiModule.class,
         complete = false,
         library = true,
-        overrides = true
+        overrides = true,
+        injects = {GrommetApp.class}
 )
 
 public final class DebugDataModule {
@@ -42,8 +44,15 @@ public final class DebugDataModule {
 
     @Provides
     @Singleton
-    RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
-        return RxSharedPreferences.create(prefs);
+    SharedPreferences provideSharedPreferences(Application app) {
+        return PreferenceManager.getDefaultSharedPreferences(app);
+//        return app.getSharedPreferences("grommet", Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    CustomRxSharedPreferences provideCustomRxSharedPreferences(SharedPreferences prefs) {
+        return CustomRxSharedPreferences.create(prefs);
     }
 
     @Provides
@@ -59,7 +68,7 @@ public final class DebugDataModule {
     @Provides
     @Singleton
     @ApiEndpoint
-    Preference<String> provideEndpointPreference(RxSharedPreferences preferences) {
+    Preference<String> provideEndpointPreference(CustomRxSharedPreferences preferences) {
         return preferences.getString("debug_endpoint", ApiEndpoints.MOCK_MODE.url);
     }
 
@@ -75,27 +84,27 @@ public final class DebugDataModule {
     @Provides
     @Singleton
     @NetworkDelay
-    Preference<Long> provideNetworkDelay(RxSharedPreferences preferences) {
+    Preference<Long> provideNetworkDelay(CustomRxSharedPreferences preferences) {
         return preferences.getLong("debug_network_delay", 2000l);
     }
 
     @Provides
     @Singleton
     @NetworkFailurePercent
-    Preference<Integer> provideNetworkFailurePercent(RxSharedPreferences preferences) {
+    Preference<Integer> provideNetworkFailurePercent(CustomRxSharedPreferences preferences) {
         return preferences.getInteger("debug_network_failure_percent", 3);
     }
 
     @Provides
     @Singleton
     @NetworkVariancePercent
-    Preference<Integer> provideNetworkVariancePercent(RxSharedPreferences preferences) {
+    Preference<Integer> provideNetworkVariancePercent(CustomRxSharedPreferences preferences) {
         return preferences.getInteger("debug_network_variance_percent", 40);
     }
 
     @Provides
     @Singleton
-    Preference<InetSocketAddress> provideNetworkProxyAddress(RxSharedPreferences preferences) {
+    Preference<InetSocketAddress> provideNetworkProxyAddress(CustomRxSharedPreferences preferences) {
 
         return preferences.getObject(
                 "debug_network_proxy",
@@ -106,14 +115,14 @@ public final class DebugDataModule {
     @Provides
     @Singleton
     @CaptureIntents
-    Preference<Boolean> provideCaptureIntentsPreference(RxSharedPreferences preferences) {
+    Preference<Boolean> provideCaptureIntentsPreference(CustomRxSharedPreferences preferences) {
         return preferences.getBoolean("debug_capture_intents", DEFAULT_CAPTURE_INTENTS);
     }
 
     @Provides
     @Singleton
     @AnimationSpeed
-    Preference<Integer> provideAnimationSpeed(RxSharedPreferences preferences) {
+    Preference<Integer> provideAnimationSpeed(CustomRxSharedPreferences preferences) {
         return preferences.getInteger("debug_animation_speed", DEFAULT_ANIMATION_SPEED);
     }
 
@@ -121,7 +130,7 @@ public final class DebugDataModule {
     @Provides
     @Singleton
     @SeenDebugDrawer
-    Preference<Boolean> provideSeenDebugDrawer(RxSharedPreferences preferences) {
+    Preference<Boolean> provideSeenDebugDrawer(CustomRxSharedPreferences preferences) {
         return preferences.getBoolean("debug_seen_debug_drawer", DEFAULT_SEEN_DEBUG_DRAWER);
     }
 
@@ -151,4 +160,5 @@ public final class DebugDataModule {
             throw new AssertionError(e);
         }
     }
+
 }

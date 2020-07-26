@@ -26,7 +26,7 @@
         android:alpha="0.12"
         android:background="@android:color/black"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/session_summary_scroll_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <Button

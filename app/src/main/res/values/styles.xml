@@ -4,15 +4,31 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="GrommetTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="GrommetTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="textColorError">@android:color/holo_red_dark</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Material Styles-->
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button.MaterialButton</item>
     </style>
+
+    <style name="Widget.App.Button.MaterialButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/text_button_color_selector</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+        <item name="hintTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TextInputLayout" parent=""/>
 
     <style name="RegistrationTheme" parent="GrommetTheme">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>

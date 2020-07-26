@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_marginStart="@dimen/content_margin"
+        android:gravity="center_vertical"
+        android:text="@string/title_event_details"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.12"
+        android:background="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="@dimen/content_margin"
+            android:paddingTop="@dimen/content_area_padding"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/pref_title_partner_name"
+            android:textColor="@color/colorSecondaryText"/>
+
+        <TextView
+            android:id="@+id/ede_partner_name"
+            android:layout_width="wrap_content"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/content_area_padding"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            tools:text="Grommet"/>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ede_til_canvasser_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/content_margin"
+        android:hint="@string/pref_title_canvaser_name"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ede_canvasser_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ede_til_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/content_margin"
+        android:hint="@string/pref_title_event_name"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ede_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ede_til_event_zip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/content_margin"
+        android:hint="@string/pref_title_event_zip_code"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ede_event_zip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ede_til_device_id"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:hint="@string/pref_title_device_id"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ede_device_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLength="10"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:id="@+id/save_view_animator"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/event_update_partner_id"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action_back"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/event_details_save"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/action_next"/>
+
+    </RelativeLayout>
+</LinearLayout>

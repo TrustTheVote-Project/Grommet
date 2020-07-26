@@ -3,7 +3,7 @@ package com.rockthevote.grommet.util;
 
 import android.app.Activity;
 import android.graphics.Rect;
-import android.support.design.widget.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;

@@ -1,42 +1,28 @@
 package com.rockthevote.grommet.ui;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.f2prateek.rx.preferences2.Preference;
+import com.google.android.material.navigation.NavigationView;
 import com.rockthevote.grommet.BuildConfig;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
-import com.rockthevote.grommet.data.db.model.RockyRequest;
-import com.rockthevote.grommet.data.db.model.Session;
-import com.rockthevote.grommet.data.prefs.CanvasserName;
-import com.rockthevote.grommet.data.prefs.EventName;
-import com.squareup.sqlbrite.BriteDatabase;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import dagger.ObjectGraph;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
-
-import static com.rockthevote.grommet.data.db.model.RockyRequest.Status.FORM_COMPLETE;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -68,7 +54,7 @@ public class BaseActivity extends AppCompatActivity {
 
         if (getSelfNavDrawerItem() != NAVDRAWER_INVALID) {
 
-            inflater.inflate(R.layout.activity_base, container);
+            inflater.inflate(R.layout.activity_base, container, true);
             drawerLayout = (DrawerLayout) findViewById(R.id.base_drawer_layout);
             drawer = (NavigationView) findViewById(R.id.base_navigation);
             content = (ViewGroup) findViewById(R.id.base_content);

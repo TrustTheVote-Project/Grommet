@@ -1,24 +1,26 @@
 package com.rockthevote.grommet.ui.eventFlow;
 
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.f2prateek.rx.preferences2.Preference;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
-import com.rockthevote.grommet.data.db.model.Session;
-import com.rockthevote.grommet.data.prefs.CurrentSessionRowId;
+import com.rockthevote.grommet.data.api.RockyService;
+import com.rockthevote.grommet.data.db.dao.PartnerInfoDao;
+import com.rockthevote.grommet.data.db.dao.RegistrationDao;
+import com.rockthevote.grommet.data.db.dao.SessionDao;
 import com.rockthevote.grommet.util.Strings;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,8 +32,11 @@ import butterknife.Optional;
 
 public class SessionProgressDialogFragment extends DialogFragment {
 
-    @Inject BriteDatabase db;
-    @Inject @CurrentSessionRowId Preference<Long> currentSessionRowId;
+    @Inject PartnerInfoDao partnerInfoDao;
+    @Inject SessionDao sessionDao;
+    @Inject RegistrationDao registrationDao;
+    @Inject SharedPreferences sharedPreferences;
+    @Inject RockyService rockyService;
 
     // Total Counts
     @BindView(R.id.summary_total_registrations) TextView totalRegistrations;
@@ -47,6 +52,8 @@ public class SessionProgressDialogFragment extends DialogFragment {
     @BindView(R.id.summary_email_opt_in_percentage) TextView percentEmailOptIn;
     @BindView(R.id.summary_sms_opt_in_percentage) TextView percentSMSOptIn;
 
+    private SessionTimeTrackingViewModel viewModel;
+
     static SessionProgressDialogFragment newInstance() {
         return new SessionProgressDialogFragment();
     }
@@ -54,7 +61,23 @@ public class SessionProgressDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Injector.obtain(getContext()).inject(this);
+        Injector.obtain(requireContext()).inject(this);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this,
+                new SessionTimeTrackingViewModelFactory(
+                        partnerInfoDao,
+                        sessionDao,
+                        registrationDao,
+                        sharedPreferences,
+                        rockyService)
+        ).get(SessionTimeTrackingViewModel.class);
+
+        observeData();
     }
 
     @Nullable
@@ -68,47 +91,34 @@ public class SessionProgressDialogFragment extends DialogFragment {
         }
 
         ButterKnife.bind(this, view);
-        updateView();
-
         return view;
     }
 
-    public void updateView() {
-        // update count totals
-        Cursor cursor = db.query(Session.SELECT_CURRENT_SESSION);
-        if (cursor.moveToNext()) {
-            Session session = Session.MAPPER.call(cursor);
-
-            totalRegistrations.setText(String.valueOf(session.totalRegistrations()));
-            totalAbandoned.setText(String.valueOf(session.totalAbandoned()));
-            totalDLN.setText(String.valueOf(session.totalIncludeDLN()));
-            totalSSN.setText(String.valueOf(session.totalIncludeSSN()));
-            totalEmailOptIn.setText(String.valueOf(session.totalEmailOptIn()));
-            totalSMSOptIn.setText(String.valueOf(session.totalSMSOptIn()));
-
+    private void observeData() {
+        viewModel.getSessionData().observe(getViewLifecycleOwner(), data -> {
             // update count totals
-            totalRegistrations.setText(String.valueOf(session.totalRegistrations()));
-            totalAbandoned.setText(String.valueOf(session.totalAbandoned()));
-            totalDLN.setText(String.valueOf(session.totalIncludeDLN()));
-            totalSSN.setText(String.valueOf(session.totalIncludeSSN()));
-            totalEmailOptIn.setText(String.valueOf(session.totalEmailOptIn()));
-            totalSMSOptIn.setText(String.valueOf(session.totalSMSOptIn()));
+            totalRegistrations.setText(String.valueOf(data.getTotalRegistrations()));
+            totalAbandoned.setText(String.valueOf(data.getAbandonedRegistrations()));
+            totalDLN.setText(String.valueOf(data.getDlnCount()));
+            totalSSN.setText(String.valueOf(data.getSsnCount()));
+            totalEmailOptIn.setText(String.valueOf(data.getEmailOptInCount()));
+            totalSMSOptIn.setText(String.valueOf(data.getSmsCount()));
 
             // update percentages
-            double totalReg = session.totalRegistrations() * 1.0;
+            double totalReg = data.getTotalRegistrations() * 1.0;
 
             if (totalReg > 0) {
                 percentDLN.setText(
-                        Strings.formatNumberAsPercentage(session.totalIncludeDLN() / totalReg));
+                        Strings.formatNumberAsPercentage(data.getDlnCount() / totalReg));
                 percentSSN.setText(
-                        Strings.formatNumberAsPercentage(session.totalIncludeSSN() / totalReg));
+                        Strings.formatNumberAsPercentage(data.getSsnCount() / totalReg));
                 percentEmailOptIn.setText(
-                        Strings.formatNumberAsPercentage(session.totalEmailOptIn() / totalReg));
+                        Strings.formatNumberAsPercentage(data.getEmailOptInCount() / totalReg));
                 percentSMSOptIn.setText(
-                        Strings.formatNumberAsPercentage(session.totalSMSOptIn() / totalReg));
+                        Strings.formatNumberAsPercentage(data.getSmsCount() / totalReg));
             }
-        }
-        cursor.close();
+        });
+
     }
 
     @Optional

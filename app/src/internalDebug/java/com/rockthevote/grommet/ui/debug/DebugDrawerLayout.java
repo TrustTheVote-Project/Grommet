@@ -17,6 +17,7 @@
 
 package com.rockthevote.grommet.ui.debug;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -29,18 +30,17 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.AccessibilityDelegateCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.KeyEventCompat;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewGroupCompat;
-import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-import android.support.v4.widget.ViewDragHelper;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewGroupCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -489,6 +489,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
    * @see #LOCK_MODE_LOCKED_CLOSED
    * @see #LOCK_MODE_LOCKED_OPEN
    */
+  @SuppressLint("WrongConstant")
   public void setDrawerLockMode(@LockMode int lockMode, View drawerView) {
     if (!isDrawerView(drawerView)) {
       throw new IllegalArgumentException("View " + drawerView + " is not a " +
@@ -839,7 +840,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
             heightSize - lp.topMargin - lp.bottomMargin, MeasureSpec.EXACTLY);
         child.measure(contentWidthSpec, contentHeightSpec);
       } else if (isDrawerView(child)) {
-        final int childGravity =
+        @SuppressLint("WrongConstant") final int childGravity =
             getDrawerViewAbsoluteGravity(child) & Gravity.HORIZONTAL_GRAVITY_MASK;
         if ((foundDrawers & childGravity) != 0) {
           throw new IllegalStateException("Child drawer has absolute gravity " +
@@ -1470,7 +1471,7 @@ public class DebugDrawerLayout extends ViewGroup implements DrawerLayoutImpl {
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && hasVisibleDrawer()) {
-      KeyEventCompat.startTracking(event);
+      event.startTracking();
       return true;
     }
     return super.onKeyDown(keyCode, event);

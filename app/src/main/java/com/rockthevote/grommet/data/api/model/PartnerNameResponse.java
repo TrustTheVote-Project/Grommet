@@ -9,6 +9,10 @@ import java.util.Date;
 
 @AutoValue
 public abstract class PartnerNameResponse {
+
+    @Json(name = "app_version")
+    public abstract int appVersion();
+
     @Json(name = "is_valid")
     public abstract boolean isValid();
 
@@ -38,6 +42,8 @@ public abstract class PartnerNameResponse {
 
     @AutoValue.Builder
     public abstract static class Builder {
+
+        public abstract Builder appVersion(int appVersion);
 
         public abstract Builder isValid(boolean isValid);
 

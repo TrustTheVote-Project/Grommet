@@ -38,15 +38,24 @@
     <string name="label_time_tracking" translatable="false">Time Tracking</string>
     <string name="time_tracking_default_value" translatable="false">--:--:--</string>
     <string name="clock_out_dialog_text" translatable="false">Do you want to end your canvassing shift?</string>
+    <string name="clock_out_must_upload" translatable="false">There are still pending registrations for upload. All registrations have to be uploaded to clock out.</string>
     <string name="shift_timeout_title" translatable="false">Shift Timed Out</string>
     <string name="shift_timeout_message" translatable="false">Your canvassing shift has timed out. Please start a new shift to continue.</string>
     <string name="validating_partner_id" translatable="false">Validating Partner ID</string>
     <string name="shift_progress" translatable="false">Shift Progress</string>
     <string name="pending_registrations">Applications Pending Upload</string>
+
+    <!--Wording here fits the requirement that we don't make a user "worry" about a failed upload-->
+    <string name="failed_registration_uploads" translatable="false">Requires Admin For Upload</string>
+
     <string name="upload">upload</string>
-    <string name="check_wifi">Bad Network Connection</string>
+    <string name="error_title">Error</string>
     <string name="login_no_wifi_error">Cannot login. Please check network connection</string>
+    <string name="update_required" translatable="false">Update Required</string>
+    <string name="login_invalid_version" translatable="false">Cannot login, update required. Please upgrade to the latest version of the application.</string>
+    <string name="login_invalid_partner_id" translatable="false">Cannot login, invalid partner ID.</string>
     <string name="no_wifi_upload_message">Cannot upload registrations. Please check network connection</string>
+    <string name="generic_network_error">Please check network connection</string>
 
     <!--Registration Activity Strings-->
     <string name="cancel_dialog_message">Cancel current registration?</string>
@@ -120,6 +129,9 @@
     <string name="section_label_assistant_address">Helper Address</string>
     <string name="section_label_assistant_contact_info">Helper Contact Info</string>
     <string name="phone_format_error">Invalid phone number</string>
+    <string name="address_format_error">Invalid address</string>
+    <string name="city_format_error">Invalid city</string>
+    <string name="name_format_error">Invalid name</string>
     <string name="label_email">Email Address</string>
     <string name="label_phone">Phone Number</string>
     <string name="label_phone_type">Type</string>
@@ -223,20 +235,7 @@ Submitting an application containing false information may also subject a person
 </p>
 ]]>
     </string>
-
-    <!-- Preference Strings -->
-    <string name="pref_key_partner_id" translatable="false">partner_id</string>
-    <string name="pref_key_partner_timeout" translatable="false">partner_timeout</string>
-    <string name="pref_key_device_id" translatable="false">device_id</string>
-    <string name="pref_key_registration_text" translatable="false">registration_text</string>
-    <string name="pref_key_registration_deadline" translatable="false">registration_deadline</string>
-    <string name="pref_key_app_version" translatable="false">app_version</string>
-    <string name="pref_key_partner_name" translatable="false">partner_name</string>
-    <string name="pref_key_canvasser_name" translatable="false">canvasser_name</string>
-    <string name="pref_key_event_zip_code" translatable="false">event_zip</string>
-    <string name="pref_key_event_name" translatable="false">event_name</string>
-    <string name="pref_key_partner_volunteer_text" translatable="false">partner_volunteer_text</string>
-
+    
     <string name="pref_title_partner_name" translatable="false">Organization</string>
     <string name="pref_title_partner_id" translatable="false">Partner ID</string>
     <string name="pref_title_canvaser_name" translatable="false">Canvaser Name</string>
@@ -402,5 +401,15 @@ If you have any questions about this privacy statement, please contact info@rock
 </ol>
 ]]>
     </string>
+
+    <!--  Error messages -->
+    <string name="registration_data_validation_error">Ensure all registrant data under \'%1$s\' is filled out completely.</string>
+    <string name="confirm_terms_not_checked">\'Did someone help you with this form?\' is checked, assistant must confirm terms</string>
+    <string name="assistants_phone_number_is_empty">Assistant\'s phone number must be filled out if \'Did someone help you with this form?\' is checked.</string>
+    <string name="must_write_in_party">Other Political Party was selected, a write in party is required</string>
+    <string name="different_mailing_address_not_filled_out">Mailing address must be filled out if \'I get my mail from a different address from the one above\' is checked.</string>
+    <string translatable="false" name="error_updating_canvasser_info">Error updating canvasser info</string>
+    <string translatable="false" name="error_location">Error logging in, ensure GPS and location are enabled</string>
+    <string translatable="false" name="generic_error">We’re having issues talking to the server, check your Wi-Fi connection and try again.</string>
 
 </resources>

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.rockthevote.grommet.ui.misc.BindableAdapter;
 
-import static butterknife.ButterKnife.findById;
 
 class AnimationSpeedAdapter extends BindableAdapter<Integer> {
   private static final int[] VALUES = {
@@ -45,7 +44,7 @@ class AnimationSpeedAdapter extends BindableAdapter<Integer> {
   }
 
   @Override public void bindView(Integer item, int position, View view) {
-    TextView tv = findById(view, android.R.id.text1);
+    TextView tv = view.findViewById(android.R.id.text1);
     if (item == 1) {
       tv.setText("Normal");
     } else {

@@ -2,7 +2,7 @@ package com.rockthevote.grommet.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;

@@ -57,12 +57,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".data.api.RegistrationService"
-            android:enabled="true"
-            android:exported="false"/>
-
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
     </application>
 
 </manifest>
