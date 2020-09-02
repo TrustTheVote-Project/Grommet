@@ -79,7 +79,7 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
     @BindView(R.id.email_edit_text) EditText email;
     @BindView(R.id.email_opt_in) CheckBox emailOptIn;
 
-    @Phone(messageResId = R.string.phone_format_error, allowEmpty = true)
+    //    @Phone(messageResId = R.string.phone_format_error, allowEmpty = true)
     @Pattern(regex = ValidationRegex.PHONE, messageResId = R.string.phone_format_error)
     @BindView(R.id.til_phone_number) TextInputLayout phoneNumber;
 
@@ -280,20 +280,22 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
         Observable<Boolean> emailOptInVerification = Observable.just(
                 !emailOptIn.isChecked() || !Strings.isBlank(textInputEmail.getEditText().getText()));
 
-        Observable<Boolean> phoneOptInVerification = Observable.just(
-                !phoneOptIn.isChecked() || !Strings.isBlank(phoneNumber.getEditText().getText()));
+//        Observable<Boolean> phoneOptInVerification = Observable.just()
+//                !phoneOptIn.isChecked());
+//                !phoneOptIn.isChecked() || !Strings.isBlank(phoneNumber.getEditText().getText()));
 
-        return Observable.zip(emailOptInVerification, phoneOptInVerification, validator.validate(),
-                (emailRes, phoneRes, validatorRes) -> {
+//        return Observable.zip(emailOptInVerification, phoneOptInVerification, validator.validate(),
+        return Observable.zip(emailOptInVerification, validator.validate(),
+                (emailRes, validatorRes) -> {
                     if (!emailRes) {
                         textInputEmail.setError(getString(R.string.email_error));
                     }
 
-                    if (!phoneRes) {
-                        phoneNumber.setError(getString(R.string.phone_format_error));
-                    }
+//                    if (!phoneRes) {
+//                        phoneNumber.setError(getString(R.string.phone_format_error));
+//                    }
 
-                    return emailRes && phoneRes && validatorRes;
+                    return emailRes && validatorRes;
                 });
     }
 

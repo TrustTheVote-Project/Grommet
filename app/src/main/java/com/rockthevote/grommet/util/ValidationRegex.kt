@@ -1,7 +1,7 @@
 package com.rockthevote.grommet.util
 
 object ValidationRegex {
-    const val PHONE = "[[:punct:]]*\\d{3}[ [:punct:]]*\\d{3}[ [:punct:]]*\\d{4}\\D*"
+    const val PHONE = "^\$|^[[:punct:]]*\\d{3}[ [:punct:]]*\\d{3}[ [:punct:]]*\\d{4}\\D*"
     const val ZIP = "\\A\\d{5}(-\\d{4})?\\z"
     const val CITY = "\\A[a-zA-Z0-9#\\-\\s’\\.]*\\z"
     const val ADDRESS = "\\A[a-zA-Z0-9#\\-\\s,\\/\\.]*\\z"
