@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#475E8C</color>
-    <color name="colorPrimaryDark">#324363</color>
-    <color name="colorBlueAccent">#4990E2</color>
+    <!-- <color name="colorPrimary">#475E8C</color>-->
+    <color name="colorPrimary">#EF5350</color>
+    <!-- <color name="colorPrimaryDark">#324363</color>-->
+    <color name="colorPrimaryDark">#9D2320</color>
+    <!-- <color name="colorBlueAccent">#4990E2</color>-->
+    <color name="colorBlueAccent">#ED7E7C</color>
     <color name="colorAccent">#E1AE44</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#727272</color>
@@ -12,4 +15,5 @@
     <color name="divider_gray_no_alpha">#B6B6B6</color>
     <color name="clock_in_green">#66BB6A</color>
     <color name="clock_out_red">#EF5350</color>
+    <color name="transparent">#80000000</color>
 </resources>

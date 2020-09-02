@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+
+        android:id="@+id/session_summary_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:useDefaultMargins="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="fill_horizontal"
+            android:text="Collection"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/end_shift_ttl_hours"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="4 hours" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="fill_horizontal"
+            android:text="Duration"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/end_shift_avg"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="16dp"
+            android:text="2.5 avg per hour"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold" />
+
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="fill_horizontal"
+            android:text="@string/complected"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/summary_total_registrations"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="12" />
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/uploaded"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/summary_uploaded_registrations"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="12" />
+
+
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/label_event_total_dln"
+            android:textColor="@color/colorSecondaryText" />
+
+        <TextView
+            android:id="@+id/summary_total_dln"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="8" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/summary_dln_percentage"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            tools:text="8" />
+
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/label_event_total_ssn"
+            android:textColor="@color/colorSecondaryText" />
+
+        <TextView
+            android:id="@+id/summary_total_ssn"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/summary_ssn_percentage"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:visibility="invisible"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/label_event_total_email_opt_in"
+            android:textColor="@color/colorSecondaryText" />
+
+        <TextView
+            android:id="@+id/summary_total_email_opt_in"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/summary_email_opt_in_percentage"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            android:visibility="invisible"
+
+            tools:text="1" />
+
+        <TextView
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="32dp"
+            android:text="@string/label_event_total_sms_opt_in"
+            android:textColor="@color/colorSecondaryText" />
+
+        <TextView
+            android:id="@+id/summary_total_sms_opt_in"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="32dp"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/summary_sms_opt_in_percentage"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="32dp"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:text="1" />
+
+    </GridLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_gravity="fill_horizontal"
+        android:background="@color/divider"
+        app:layout_constraintEnd_toEndOf="@+id/session_summary_details"
+        app:layout_constraintStart_toStartOf="@+id/session_summary_details"
+        app:layout_constraintTop_toBottomOf="@+id/session_summary_details" />
+
+
+    <GridLayout
+        android:id="@+id/session_summary_deVtails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:layout_marginTop="16dp"
+        android:useDefaultMargins="false"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/session_summary_details"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+
+        <TextView
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/abandoned"
+            android:textColor="@color/colorPrimaryText" />
+
+        <TextView
+            android:id="@+id/summary_total_abandoned"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:layout_marginStart="34dp"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorBlueAccent"
+            android:textStyle="bold"
+            tools:text="4" />
+
+        <TextView
+            android:id="@+id/summary_total_abandoned_in_percentage"
+            style="@android:style/TextAppearance.Material.Subhead"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_columnSpan="1"
+            android:visibility="invisible"
+            tools:text="1" />
+
+    </GridLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

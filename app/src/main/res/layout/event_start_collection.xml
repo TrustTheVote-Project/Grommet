@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/content_margin"
+        android:orientation="horizontal">
+        <com.google.android.material.textview.MaterialTextView
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Start Collection for "/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/start_collection_name"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Anne O'Flaherty"/>
+    </LinearLayout>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/impostor_text"
+        android:layout_marginStart="@dimen/content_margin"
+        android:textSize="12sp"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/if_this_isn_t_you_click_here"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginEnd="80dp"
+        android:text="@string/when_you_have_arrived_at_your_shift_nlocation_and_are_ready_to_begin_click_nthe_i_start_collection_i_button"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/start_collection_btn"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/oval_shift"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:text="Start Collection"
+        android:textColor="@color/white" />
+
+
+
+</LinearLayout>

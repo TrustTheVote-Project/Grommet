@@ -26,7 +26,8 @@ data class Session(
         @ColumnInfo(name = "partner_tracking_id")
         val partnerTrackingId: String,
 
-        @ColumnInfo(name = "geo_location") val geoLocation: ApiGeoLocation,
+        @ColumnInfo(name = "geo_location")
+        val geoLocation: ApiGeoLocation,
 
         // name of the canvasing event, the location field
         @ColumnInfo(name = "open_tracking_id")
@@ -35,6 +36,17 @@ data class Session(
         @ColumnInfo(name = "canvasser_name")
         val canvasserName: String,
 
+        @ColumnInfo(name = "canvasser_last_name")
+        val canvasserLastName: String,
+
+        @ColumnInfo(name = "canvasser_email")
+        val canvasserEmail: String,
+
+        @ColumnInfo(name = "canvasser_phone")
+        val canvasserPhone: String,
+
+        @ColumnInfo(name = "shift_id")
+        val shiftId: String,
         // the tablet number
         @ColumnInfo(name = "device_id")
         val deviceId: String,

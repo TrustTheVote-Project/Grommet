@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rockthevote.grommet.R;
 import com.rockthevote.grommet.data.Injector;
 import com.rockthevote.grommet.data.api.RockyService;
@@ -36,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kotlin.Unit;
+import timber.log.Timber;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -46,11 +49,13 @@ public final class MainActivity extends BaseActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.main_content) CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.pending_registrations) TextView pendingRegistrations;
-    @BindView(R.id.failed_registrations_container) LinearLayout failedRegistrationsContainer;
-    @BindView(R.id.failed_registrations) TextView failedRegistrations;
-    @BindView(R.id.upload) Button upploadButton;
+//    @BindView(R.id.pending_registrations) TextView pendingRegistrations;
+//    @BindView(R.id.failed_registrations_container) LinearLayout failedRegistrationsContainer;
+//    @BindView(R.id.failed_registrations) TextView failedRegistrations;
+//    @BindView(R.id.upload) Button upploadButton;
     @BindView(R.id.event_flow_wizard) EventFlowWizard eventFlowWizard;
+//    @BindView(R.id.upload_section) LinearLayout uploadSection;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     @Inject ViewContainer viewContainer;
 
@@ -68,18 +73,30 @@ public final class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.obtain(this).inject(this);
+        Timber.e("MainActivity onCreate");
 
         View view = getLayoutInflater().inflate(R.layout.activity_main, getContentView(), true);
         ButterKnife.bind(this, view);
         setSupportActionBar(toolbar);
         requestGPSPermission();
-
         viewModel = new ViewModelProvider(
                 this,
                 new MainActivityViewModelFactory(rockyService, registrationDao, sharedPreferences)
         ).get(MainActivityViewModel.class);
 
         observeState();
+//        observeFabVisibility();
+
+    }
+
+    private void observeFabVisibility(){
+        viewModel.isUploadCountZero().observe(this, bool ->{
+            if(bool){
+                fab.setVisibility(View.VISIBLE);
+            }else{
+                fab.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void observeState() {
@@ -91,56 +108,61 @@ public final class MainActivity extends BaseActivity {
             }
         });
 
-        viewModel.getState().observe(this, mainActivityState -> {
-
-            // Reset base states
-            upploadButton.setEnabled(false);
-            failedRegistrationsContainer.setVisibility(View.GONE);
-            failedRegistrations.setText("");
-
-            if (mainActivityState instanceof MainActivityState.Content) {
-                MainActivityState.Content content = (MainActivityState.Content) mainActivityState;
-
-                String pendingUploads = String.format(
-                        Locale.getDefault(),
-                        "%d",
-                        content.getPendingUploads()
-                );
-
-                pendingRegistrations.setText(pendingUploads);
-
-                if (content.getFailedUploads() > 0 || content.getPendingUploads() > 0) {
-                    upploadButton.setEnabled(true);
-                } else {
-                    upploadButton.setEnabled(false);
-                }
-
-                if (content.getFailedUploads() > 0) {
-                    failedRegistrationsContainer.setVisibility(View.VISIBLE);
-
-                    String failedUploads = String.format(
-                            Locale.getDefault(),
-                            "%d",
-                            content.getFailedUploads()
-                    );
-
-                    failedRegistrations.setText(failedUploads);
-                }
-
-            } else if (mainActivityState instanceof MainActivityState.Loading) {
-                upploadButton.setEnabled(false);
-            } else if (mainActivityState instanceof MainActivityState.Init) {
-                viewModel.refreshPendingUploads();
-            } else if (mainActivityState instanceof MainActivityState.Error) {
-                /*
-                    Right now, if there's an error, we do nothing. The "UPLOAD" button will be
-                    disabled because that's the default, but will be re-enabled when app restarts
-                    because VM state is not retained. We need guidance on error handling to
-                    implement any changes here
-                 */
-                // TODO: 18 July 2020, Still need guidance on error handling behavior here
-            }
-        });
+//        viewModel.getState().observe(this, mainActivityState -> {
+//
+//            // Reset base states
+//            upploadButton.setEnabled(false);
+//            failedRegistrationsContainer.setVisibility(View.GONE);
+//            failedRegistrations.setText("");
+//
+//            if (mainActivityState instanceof MainActivityState.Content) {
+//                MainActivityState.Content content = (MainActivityState.Content) mainActivityState;
+//
+//                String pendingUploads = String.format(
+//                        Locale.getDefault(),
+//                        "%d",
+//                        content.getPendingUploads()
+//                );
+//
+////                pendingRegistrations.setText(pendingUploads);
+//
+////                if(content.getPendingUploads() > 0){
+////                }
+//
+//                if (content.getFailedUploads() > 0 || content.getPendingUploads() > 0) {
+//                    makeUploadVisible();
+//                    upploadButton.setEnabled(true);
+//                } else {
+//                    makeUploadInvisible();
+//                    upploadButton.setEnabled(false);
+//                }
+//
+//                if (content.getFailedUploads() > 0) {
+//                    failedRegistrationsContainer.setVisibility(View.VISIBLE);
+//
+//                    String failedUploads = String.format(
+//                            Locale.getDefault(),
+//                            "%d",
+//                            content.getFailedUploads()
+//                    );
+//
+//                    failedRegistrations.setText(failedUploads);
+//                }
+//
+//            } else if (mainActivityState instanceof MainActivityState.Loading) {
+//                upploadButton.setEnabled(false);
+//            } else if (mainActivityState instanceof MainActivityState.Init) {
+//                viewModel.refreshPendingUploads();
+//            } else if (mainActivityState instanceof MainActivityState.Error) {
+//                /*
+//                    Right now, if there's an error, we do nothing. The "UPLOAD" button will be
+//                    disabled because that's the default, but will be re-enabled when app restarts
+//                    because VM state is not retained. We need guidance on error handling to
+//                    implement any changes here
+//                 */
+//                // TODO: 18 July 2020, Still need guidance on error handling behavior here
+//            }
+//        });
     }
 
     /**
@@ -164,8 +186,19 @@ public final class MainActivity extends BaseActivity {
         viewModel.refreshPendingUploads();
     }
 
-    private void requestGPSPermission() {
+//    private void makeUploadInvisible(){
+//        uploadSection.setVisibility(View.INVISIBLE);
+////        upploadButton.setVisibility(View.INVISIBLE);
+////        if(canRegister()){
+////
+////        }
+//    }
+//
+//    private void makeUploadVisible(){
+//        uploadSection.setVisibility(View.VISIBLE);
+//    }
 
+    private void requestGPSPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
 
@@ -185,10 +218,10 @@ public final class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.fab)
-    public void onClick(View v) {
-        viewModel.asyncCanRegister(this::canRegister, this::cantRegister);
-    }
+//    @OnClick(R.id.fab)
+//    public void onClick(View v) {
+//        viewModel.asyncCanRegister(this::canRegister, this::cantRegister);
+//    }
 
     private Unit canRegister() {
         startActivity(new Intent(this, RegistrationActivity.class),
@@ -215,12 +248,12 @@ public final class MainActivity extends BaseActivity {
      * starts the upload process if wifi is available, else notifies the user there is no wifi.
      * The button is enabled/disabled by the presense of pending applications
      *
-     * @param v
+//     * @param v
      */
-    @OnClick(R.id.upload)
-    public void onClickUpload(View v) {
-        viewModel.uploadRegistrations();
-    }
+//    @OnClick(R.id.upload)
+//    public void onClickUpload(View v) {
+//        viewModel.uploadRegistrations();
+//    }
 
     @Override
     public Toolbar getToolbar() {

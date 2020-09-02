@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name" translatable="false">PA OVR APP</string>
+<!--    <string name="app_name" translatable="false">PA Voter Registration App</string>-->
+    <string name="app_name" translatable="false">Training App</string>
 
     <string name="no_intent_handler" translatable="false">
         There are no applications available to handle this action.
@@ -77,6 +78,7 @@
     <string name="eighteen_or_older_err">You must be 18 or older to vote</string>
     <string name="us_citizen_err">You must be a U.S. citizen</string>
     <string name="email_error">Invalid email</string>
+    <string name="email_error_v4">Invalid email.Use format: jsmith@example.com.</string>
     <string name="birthday_error">Must be 18 by %s</string>
 
 
@@ -103,6 +105,7 @@
     <string name="label_receive_text">I agree that %s/Pennsylvania Voice/State Voices may call and text me with important updates and reminders</string>
     <string name="error_no_address">Complete registration using paper form</string>
     <string name="zip_code_error">Invalid zip–code</string>
+    <string name="zip_code_error_fc">Invalid zip–code for this county</string>
 
     <!--Register Fragment Strings-->
     <string name="fragment_title_additional_info">Personal</string>
@@ -117,7 +120,7 @@
     <string name="label_other_party">Other Political Party</string>
     <string name="label_does_not_have_penn_dot">I do not know my PennDOT number</string>
     <string name="political_party_change">I have changed my political party</string>
-    <string name="label_ssn_last_four">Last Four Digitals of social security number</string>
+    <string name="label_ssn_last_four">Last four digits of Social Security number</string>
     <string name="label_does_not_have_ssn">I do not know the last four of my social security number</string>
     <string name="preferred_language_label">Preferred Language to Receive Election Materials</string>
     <string name="section_label_election_info">Personal Info</string>
@@ -129,6 +132,7 @@
     <string name="section_label_assistant_address">Helper Address</string>
     <string name="section_label_assistant_contact_info">Helper Contact Info</string>
     <string name="phone_format_error">Invalid phone number</string>
+    <string name="phone_format_error_v4">Invalid phone number.Use 10-digit number.</string>
     <string name="address_format_error">Invalid address</string>
     <string name="city_format_error">Invalid city</string>
     <string name="name_format_error">Invalid name</string>
@@ -235,7 +239,7 @@ Submitting an application containing false information may also subject a person
 </p>
 ]]>
     </string>
-    
+
     <string name="pref_title_partner_name" translatable="false">Organization</string>
     <string name="pref_title_partner_id" translatable="false">Partner ID</string>
     <string name="pref_title_canvaser_name" translatable="false">Canvaser Name</string>
@@ -307,7 +311,7 @@ outcomes.
 ]]>
     </string>
 
-     <string name="data_usage_activity_text" translatable="false">
+    <string name="data_usage_activity_text" translatable="false">
 <![CDATA[
 
 <p>
@@ -410,6 +414,58 @@ If you have any questions about this privacy statement, please contact info@rock
     <string name="different_mailing_address_not_filled_out">Mailing address must be filled out if \'I get my mail from a different address from the one above\' is checked.</string>
     <string translatable="false" name="error_updating_canvasser_info">Error updating canvasser info</string>
     <string translatable="false" name="error_location">Error logging in, ensure GPS and location are enabled</string>
+    <string translatable="false" name="error_network">Error logging in, ensure Ethernet are enabled</string>
     <string translatable="false" name="generic_error">We’re having issues talking to the server, check your Wi-Fi connection and try again.</string>
+    <string name="start_shift">Start Shift</string>
+    <string name="shift_location">Shift Location</string>
+    <string name="canvasser_email_address">Canvasser Email Address</string>
+    <string name="canvasser_phone_number">Canvasser Phone Number</string>
+    <string name="canvasser_last_name">Canvasser Last Name</string>
+    <string name="canvasser_first_name">Canvasser First Name</string>
+    <string name="tbd">TBD</string>
+    <string name="not_valid_version">This is not the most current version of the software. Please close and update the software before continuing.</string>
+    <string name="partner_correct_text">\nIf this is the correct Partner, please click <i>Continue.</i></string>
+    <string name="you_are_about_end_strg">You are about to end </string>
+    <string name="you_have_ended_cln_full">began on this tablet. Before you may log in and begin a new shift, please upload any voter registrations stored on this device.</string>
+    <string name="you_have_ended_cln">You have ended collection for a shift that</string>
+    <string name="you_have_ended_cln_part_sec">  began on this </string>
+    <string name="you_have_ended_cln_part_third">  tablet. Before you may log in and begin</string>
+    <string name="you_have_ended_cln_part_fourth">a new shift, please upload any voter registrations stored on this device.</string>
 
+    <string name="you_are_about_end">You are about to end collection.</string>
+    <string name="confirm_or_cancel">Please confirm or cancel.</string>
+    <string name="otherwise_click_retry">Otherwise, click Retry to try again.</string>
+    <string name="partner_id_found">Partner ID Found: </string>
+    <string name="shre_text">You will need a good Wi-Fi signal to complete this process and then start your shift. Are you sure?</string>
+    <string name="complected">Completed</string>
+    <string name="register_voter">Register Voter</string>
+    <string name="this_is_your_shift_dashboard_click_nregister_voter_to_begin_a_registration_nclick_end_collection_to_stop_collection">This is your shift dashboard. Click \n<i>Register Voter</i> to begin a registration.\nClick <i>End Collection</i> to stop collection.</string>
+    <string name="collection_status">Collection Status</string>
+    <string name="last_complected_registration">Last Completed Registration: </string>
+    <string name="jane_doe">Jane Doe</string>
+    <string name="abandoned">Abandoned</string>
+    <string name="if_this_isn_t_you_click_here">(If this isn\'t you, click here)</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">CANCEL</string>
+    <string name="i_m_sure">I\'m sure</string>
+    <string name="wi_fi_signal_is_not_strong_enough_n_move_to_a_better_location_and_try_again">WI-FI Signal is not strong enough. \n Move to a better location and try again</string>
+    <string name="end_collection">End Collection</string>
+    <string name="collection_has_ended_and_you_must_nupload_all_voter_registration_records_nbefore_ending_your_shift_do_not_begin_nthis_until_you_are_somewhere_with_a_ngood_wi_fi_signal">Collection has ended, and you must \nupload all voter registration records \nbefore ending your shift. Do not begin \nthis until you are somewhere with a \ngood Wi-Fi signal.</string>
+    <string name="successfully_uploaded">Successfully Uploaded</string>
+    <string name="registrations_to_upload">Registrations to Upload</string>
+    <string name="upload_registrations">Upload Registrations</string>
+    <string name="end_shift">End Shift</string>
+    <string name="collection">Collection</string>
+    <string name="duration">Duration</string>
+    <string name="uploaded">Uploaded</string>
+    <string name="done">DONE</string>
+    <string name="every_vote_ncounts">Every Vote \nCounts</string>
+    <string name="error_wifi_signal">An error has occured while uploading. \nPlease try again. Do not begin this until \n you are somewhere with a good Wi-Fi \n signal.</string>
+    <string name="less_than_hour">Less than 1 hour</string>
+    <string name="avg_per_hour"> avg per hour</string>
+    <string name="enter_your_check_in_information_in_the_fields_below_all_fields_are_required_nclick_the_start_shift_button_to_continue">Enter your check in information in the fields below. All fields are required.\nClick the <i>Start Shift</i> button to continue.</string>
+    <string name="enter_your_partner_id_in_the_field_below_n_and_click_the_lookup_button">Enter your partner ID in the field below,\nand click the <i>Lookup</i> button.</string>
+    <string name="start_shift_with_partner_id">Start Shift with Partner ID</string>
+    <string name="lookup">Lookup</string>
+    <string name="when_you_have_arrived_at_your_shift_nlocation_and_are_ready_to_begin_click_nthe_i_start_collection_i_button">When you have arrived at your shift \nlocation and are ready to begin, click \nthe <i>Start Collection</i> button.</string>
 </resources>
