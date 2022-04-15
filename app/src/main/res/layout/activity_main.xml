@@ -21,6 +21,7 @@
         android:background="@android:color/transparent"
         android:elevation="6dp">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/wizard"
             android:layout_width="match_parent"
@@ -37,75 +38,75 @@
 
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:id="@+id/upload_section"
-            android:layout_below="@id/wizard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="bottom|center_horizontal"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/upload_section"-->
+<!--            android:layout_below="@id/wizard"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_gravity="bottom|center_horizontal"-->
+<!--            android:paddingBottom="@dimen/activity_vertical_margin"-->
+<!--            android:orientation="vertical">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_height="match_parent"
-                    android:text="@string/pending_registrations"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="@string/pending_registrations"/>-->
 
-                <TextView
-                    android:id="@+id/pending_registrations"
-                    android:layout_width="wrap_content"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:textColor="@color/clock_out_red"
-                    tools:text="5"/>
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/pending_registrations"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:paddingStart="@dimen/activity_horizontal_margin"-->
+<!--                    android:paddingEnd="@dimen/activity_horizontal_margin"-->
+<!--                    android:textColor="@color/clock_out_red"-->
+<!--                    tools:text="5"/>-->
+<!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/failed_registrations_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/failed_registrations_container"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_height="match_parent"
-                    android:text="@string/failed_registration_uploads"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="@string/failed_registration_uploads"/>-->
 
-                <TextView
-                    android:id="@+id/failed_registrations"
-                    android:layout_width="wrap_content"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:textColor="@color/clock_out_red"
-                    tools:text="5"/>
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/failed_registrations"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:paddingStart="@dimen/activity_horizontal_margin"-->
+<!--                    android:paddingEnd="@dimen/activity_horizontal_margin"-->
+<!--                    android:textColor="@color/clock_out_red"-->
+<!--                    tools:text="5"/>-->
+<!--            </LinearLayout>-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/upload"
-                android:layout_width="wrap_content"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/btn_colored_background_blue_tint"
-                android:text="@string/upload"/>
+<!--&lt;!&ndash;            <com.google.android.material.button.MaterialButton&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/upload"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                style="@style/Widget.MaterialComponents.Button"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_gravity="center_horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:backgroundTint="@color/btn_colored_background_blue_tint"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="@string/upload"/>&ndash;&gt;-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -119,6 +120,7 @@
         app:elevation="4dp"
         app:fabCustomSize="100dp"
         app:fabSize="auto"
+        android:visibility="invisible"
         app:maxImageSize="70dp"
         app:srcCompat="@drawable/register_a_voter"/>
 

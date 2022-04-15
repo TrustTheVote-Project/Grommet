@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:useDefaultMargins="false">
+
+    <TextView
+        android:id="@+id/address_section_title"
+        style="@style/GrommetContentArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/content_area_padding"
+        android:paddingTop="@dimen/content_area_padding"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        tools:text="@string/section_label_mailing_address"
+        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_street_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginEnd="@dimen/content_margin"
+        android:layout_marginStart="@dimen/content_margin"
+        app:errorEnabled="false"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/street"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_height"
+            android:hint="@string/label_street"
+            android:inputType="textPostalAddress|textCapWords"
+            android:maxLength="40"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_street_address_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginEnd="@dimen/content_margin"
+        android:layout_marginStart="@dimen/content_margin"
+        app:errorEnabled="false"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/street_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_height"
+            android:hint="@string/label_street_2"
+            android:inputType="textPostalAddress|textCapWords"
+            android:maxLength="40"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.rockthevote.grommet.ui.misc.BetterSpinner
+            android:id="@+id/spinner_unit_type"
+            android:layout_marginStart="@dimen/content_margin"
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_gravity="fill_horizontal"
+            android:hint="@string/unit_type"
+            app:errorEnabled="false"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_unit"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_gravity="fill_horizontal"
+            android:layout_weight=".3"
+            app:errorEnabled="false"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/unit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/label_unit_num"
+                android:inputType="textPostalAddress|textCapWords"
+                android:maxLength="15"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.rockthevote.grommet.ui.misc.BetterSpinner
+            android:id="@+id/spinner_county"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginEnd="@dimen/content_margin"
+            android:hint="@string/label_county"
+            app:errorEnabled="false"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_city"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="@dimen/content_margin"
+            app:errorEnabled="false"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/label_city"
+                android:inputType="textPostalAddress|textCapWords"
+                android:maxLength="35"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.rockthevote.grommet.ui.misc.BetterSpinner
+            android:id="@+id/spinner_state"
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_gravity="fill_horizontal"
+            android:hint="@string/label_state"
+            app:errorEnabled="false"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_zip_code"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="74dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginEnd="@dimen/content_margin"
+            app:errorEnabled="false"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/zip"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="@string/label_zip_code"
+                android:inputType="number"
+                android:maxLength="5"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</LinearLayout>
+<!--<GridLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:columnCount="3"-->
+<!--    android:useDefaultMargins="false">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/address_section_title"-->
+<!--        style="@style/GrommetContentArea"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_columnSpan="3"-->
+<!--        android:paddingBottom="@dimen/content_area_padding"-->
+<!--        android:paddingTop="@dimen/content_area_padding"-->
+<!--        android:textAppearance="@android:style/TextAppearance.Material.Subhead"-->
+<!--        tools:text="@string/section_label_mailing_address"-->
+<!--        />-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_street_address"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_columnSpan="3"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_marginEnd="@dimen/content_margin"-->
+<!--        android:layout_marginStart="@dimen/content_margin"-->
+<!--        app:errorEnabled="false"-->
+<!--        >-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/street"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/list_item_height"-->
+<!--            android:hint="@string/label_street"-->
+<!--            android:inputType="textPostalAddress|textCapWords"-->
+<!--            android:maxLength="40"-->
+<!--            android:maxLines="1"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_street_address_2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_columnSpan="3"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_marginEnd="@dimen/content_margin"-->
+<!--        android:layout_marginStart="@dimen/content_margin"-->
+<!--        app:errorEnabled="false"-->
+<!--        >-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/street_2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/list_item_height"-->
+<!--            android:hint="@string/label_street_2"-->
+<!--            android:inputType="textPostalAddress|textCapWords"-->
+<!--            android:maxLength="40"-->
+<!--            android:maxLines="1"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    <com.rockthevote.grommet.ui.misc.BetterSpinner-->
+<!--        android:id="@+id/spinner_unit_type"-->
+<!--        android:layout_marginStart="@dimen/content_margin"-->
+<!--        android:layout_columnWeight=".4"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:hint="@string/unit_type"-->
+<!--        app:errorEnabled="false"/>-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_unit"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_columnWeight=".3"-->
+<!--        app:errorEnabled="false"-->
+<!--        >-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/unit"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/list_item_height"-->
+<!--            android:hint="@string/label_unit_num"-->
+<!--            android:inputType="textPostalAddress|textCapWords"-->
+<!--            android:maxLength="15"-->
+<!--            android:maxLines="1"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    <com.rockthevote.grommet.ui.misc.BetterSpinner-->
+<!--        android:id="@+id/spinner_county"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_columnWeight=".3"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_marginEnd="@dimen/content_margin"-->
+<!--        android:hint="@string/label_county"-->
+<!--        app:errorEnabled="false"-->
+<!--        />-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_city"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_marginStart="@dimen/content_margin"-->
+<!--        app:errorEnabled="false"-->
+<!--        >-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/city"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/list_item_height"-->
+<!--            android:hint="@string/label_city"-->
+<!--            android:inputType="textPostalAddress|textCapWords"-->
+<!--            android:maxLength="35"-->
+<!--            android:maxLines="1"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    <com.rockthevote.grommet.ui.misc.BetterSpinner-->
+<!--        android:id="@+id/spinner_state"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:hint="@string/label_state"-->
+<!--        app:errorEnabled="false"/>-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_zip_code"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="fill_horizontal"-->
+<!--        android:layout_marginEnd="@dimen/content_margin"-->
+<!--        app:errorEnabled="false"-->
+<!--        >-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/zip"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/list_item_height"-->
+<!--            android:hint="@string/label_zip_code"-->
+<!--            android:inputType="phone"-->
+<!--            android:maxLength="10"-->
+<!--            android:maxLines="1"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--</GridLayout>-->

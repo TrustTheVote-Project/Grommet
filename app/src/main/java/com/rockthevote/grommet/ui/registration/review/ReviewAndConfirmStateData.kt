@@ -8,5 +8,6 @@ data class ReviewAndConfirmStateData(
     val residentialAddress: String,
     val mailingAddress: String?,
     val race: String,
-    val party: String
+    val party: String,
+    val otherParty:String?=null
 )

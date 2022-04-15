@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView   xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="90dp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/session_summary_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/content_margin"
+        android:textStyle="bold"
+        android:layout_marginTop="22dp"
+        android:text="@string/end_collection"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="20dp"
+        android:background="@color/divider"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/end_collection_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/content_margin"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/end_clt_stranger"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/content_margin"
+        android:textSize="12sp"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/end_collection_warning"
+        android:layout_marginTop="@dimen/detail_vertical_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginEnd="80dp"
+        android:text="@string/collection_has_ended_and_you_must_nupload_all_voter_registration_records_nbefore_ending_your_shift_do_not_begin_nthis_until_you_are_somewhere_with_a_ngood_wi_fi_signal"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:visibility="gone"
+        android:id="@+id/end_collection_error"
+        android:layout_marginTop="@dimen/detail_vertical_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+        android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginEnd="80dp"
+        android:textColor="@color/clock_out_red"
+        android:text="@string/error_wifi_signal"
+        />
+
+
+    <include
+        android:id="@+id/event_collection_status_stats"
+        layout="@layout/summary_totals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginTop="24sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/content_margin"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/content_area_padding"
+                android:text="@string/successfully_uploaded"
+                android:textColor="@color/colorPrimaryText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registrations_to_upload_count"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/content_area_padding"
+                android:text="@string/registrations_to_upload"
+                android:textColor="@color/colorPrimaryText" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scfl_uploaded_count"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/content_area_padding"
+                android:text="0"
+                android:textColor="@color/colorBlueAccent" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scfl_to_upload_count"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/content_area_padding"
+                android:text="10"
+                android:textColor="@color/colorBlueAccent" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/upload_registrations_btn"
+        android:layout_marginTop="24dp"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/oval_shift"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="@string/upload_registrations"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>
+</ScrollView>

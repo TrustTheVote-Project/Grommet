@@ -1,80 +1,72 @@
-<GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:columnCount="2"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:animateLayoutChanges="true"
+    android:columnCount="2"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:useDefaultMargins="true">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_columnSpan="2"
-        android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
+        android:layout_marginEnd="@dimen/content_margin"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/review_confirm_instructions"
-        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-        />
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
     <View
         style="@style/GrommetDivider"
         android:layout_width="match_parent"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        />
+        android:paddingBottom="@dimen/content_area_padding" />
 
     <TextView
         style="@style/GrommetContentArea"
         android:layout_columnSpan="2"
-        android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
+        android:layout_marginEnd="@dimen/content_margin"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/section_label_personal_info"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/section_label_name"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/section_label_name" />
 
     <TextView
         android:id="@+id/review_name"
         android:layout_marginEnd="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        tools:text="Mr. Aaron Huttner"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        tools:text="Mr. Aaron Huttner" />
 
     <TextView
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/label_birthday"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/label_birthday" />
 
     <TextView
         android:id="@+id/review_birthday"
         android:layout_marginEnd="@dimen/content_margin"
-        tools:text="10/13/1986"
-        />
+        tools:text="10/13/1986" />
 
     <TextView
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/label_email"
 
         />
@@ -82,187 +74,186 @@
     <TextView
         android:id="@+id/review_email"
         android:layout_marginEnd="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        tools:text="emailAddress@gmail.com"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        tools:text="emailAddress@gmail.com" />
 
     <TextView
         android:id="@+id/review_phone_label"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/section_label_phone"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/section_label_phone" />
 
     <TextView
         android:id="@+id/review_phone"
         android:layout_marginEnd="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        tools:text="555-555-5555"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        tools:text="555-555-5555" />
 
 
     <View
         style="@style/GrommetDivider"
         android:layout_width="match_parent"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        />
+        android:paddingBottom="@dimen/content_area_padding" />
 
 
     <TextView
         style="@style/GrommetContentArea"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/section_label_registration_address"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/review_reg_address"
         android:layout_gravity="fill_horizontal"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        tools:text="801 N Monroe St. "
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        tools:text="801 N Monroe St. " />
 
     <View
         android:id="@+id/review_mailing_address_divider"
         style="@style/GrommetDivider"
         android:layout_width="match_parent"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/review_mailing_address_section_title"
         style="@style/GrommetContentArea"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/section_label_mailing_address"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/review_mail_address"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:visibility="gone"
         tools:text="801 N Monroe St. "
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <View
         style="@style/GrommetDivider"
         android:layout_width="match_parent"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        />
+        android:paddingBottom="@dimen/content_area_padding" />
 
     <TextView
         style="@style/GrommetContentArea"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/fragment_title_additional_info"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_marginStart="@dimen/content_margin"
-        android:text="@string/section_label_race"
-        />
+        android:text="@string/section_label_race" />
 
     <TextView
         android:id="@+id/review_race"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:visibility="visible"
         tools:text="Hispanic "
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <TextView
         android:layout_marginStart="@dimen/content_margin"
-        android:text="@string/section_label_party"
-        />
+        android:text="@string/section_label_party" />
 
-    <TextView
-        android:id="@+id/review_party"
-        android:paddingBottom="@dimen/content_area_padding"
-        android:paddingTop="@dimen/content_area_padding"
-        android:visibility="visible"
-        tools:text="Democratic"
-        tools:visibility="visible"
-        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       >
+
+        <TextView
+            android:id="@+id/review_party"
+
+            android:visibility="visible"
+            tools:text="Democratic"
+            tools:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:layout_marginStart="30dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/review_other_party"
+            android:layout_row="0"
+            android:visibility="visible"
+            tools:text="LOL"
+            tools:visibility="visible" />
+    </LinearLayout>
 
     <View
         style="@style/GrommetDivider"
         android:layout_width="match_parent"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        />
+        android:paddingBottom="@dimen/content_area_padding" />
 
     <TextView
         style="@style/GrommetContentArea"
         android:layout_columnSpan="2"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/section_label_signature"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <TextView
-        android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
-        android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/signature_instructions"
         android:layout_columnSpan="2"
-        android:textStyle="italic"
-        />
+        android:layout_marginStart="@dimen/content_margin"
+        android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/signature_instructions"
+        android:textStyle="italic" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/signature_height"
         android:layout_columnSpan="2"
-        android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginStart="@dimen/content_margin"
         android:layout_marginTop="@dimen/content_area_padding"
+        android:layout_marginEnd="@dimen/content_margin"
         android:background="@drawable/dotted_border"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        >
+        android:paddingBottom="@dimen/content_area_padding">
 
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_above="@+id/signature_pad_description"
             android:layout_marginBottom="8dp"
-            android:background="@color/divider"/>
+            android:background="@color/divider" />
 
         <TextView
             android:id="@+id/signature_pad_description"
@@ -272,13 +263,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
             android:text="@string/signature_description"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/darker_gray" />
 
         <com.github.gcacace.signaturepad.views.SignaturePad
             android:id="@+id/signature_pad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:penColor="@android:color/black"/>
+            app:penColor="@android:color/black" />
 
         <ImageButton
             android:id="@+id/clear_signature"
@@ -289,34 +280,32 @@
             android:background="@drawable/circular_ripple_mask"
             android:scaleType="center"
             android:src="@drawable/ic_clear_black_24dp"
-            android:tint="@color/divider_gray_no_alpha"/>
+            android:tint="@color/divider_gray_no_alpha" />
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/signature_pad_error"
         android:layout_columnSpan="2"
-        android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
+        android:layout_marginEnd="@dimen/content_margin"
         android:paddingTop="@dimen/content_area_padding"
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/signature_pad_error"
         android:textAppearance="@android:style/TextAppearance.Material.Caption"
         android:textColor="@android:color/holo_red_dark"
-        android:text="@string/signature_pad_error"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <CheckBox
         android:id="@+id/checkbox_agreement"
         android:layout_width="wrap_content"
         android:layout_columnSpan="2"
-        android:layout_marginEnd="@dimen/content_margin"
         android:layout_marginStart="@dimen/content_margin"
-        android:paddingBottom="@dimen/content_area_padding"
+        android:layout_marginEnd="@dimen/content_margin"
         android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/voter_agreement_text"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/voter_agreement_text" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_register"
@@ -324,9 +313,8 @@
         android:layout_marginStart="@dimen/content_margin"
         android:backgroundTint="@color/colorAccent"
         android:enabled="false"
-        android:paddingBottom="@dimen/content_area_padding"
         android:paddingTop="@dimen/content_area_padding"
-        android:text="@string/label_button_register"
-        />
+        android:paddingBottom="@dimen/content_area_padding"
+        android:text="@string/label_button_register" />
 </GridLayout>
 

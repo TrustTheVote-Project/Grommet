@@ -3,8 +3,10 @@ package com.rockthevote.grommet.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import com.rockthevote.grommet.data.api.model.PartnerVolunteerText
 import com.rockthevote.grommet.data.api.model.RegistrationNotificationText
+import com.rockthevote.grommet.data.api.model.ValidLocation
 import java.util.*
 
 /**
@@ -20,14 +22,17 @@ data class PartnerInfo(
         @ColumnInfo(name = "partner_id")
         val partnerId: Long,
 
-        @ColumnInfo(name = "app_version")
-        val appVersion: Float,
-
         @ColumnInfo(name = "is_valid")
         val isValid: Boolean,
 
         @ColumnInfo(name = "partner_name")
         val partnerName: String,
+
+        @ColumnInfo(name = "valid_locations")
+        val validLocations: ArrayList<ValidLocation>,
+
+        @ColumnInfo(name = "errors")
+        val errors: ArrayList<String>,
 
         @ColumnInfo(name = "registration_deadline_date")
         val registrationDeadlineDate: Date,
@@ -37,4 +42,5 @@ data class PartnerInfo(
 
         @ColumnInfo(name = "volunteer_text")
         val volunteerText: PartnerVolunteerText
+
 )

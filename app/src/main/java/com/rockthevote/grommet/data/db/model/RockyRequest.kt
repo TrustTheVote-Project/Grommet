@@ -34,14 +34,8 @@ data class RockyRequestBody(
     val finishWithState: Boolean?,
     @Json(name = "created_via_api")
     val createdViaApi: Boolean?,
-    @Json(name = "source_tracking_id")
-    val sourceTrackingId: String,
-    @Json(name = "partner_tracking_id")
-    val partnerTrackingId: String,
-    @Json(name = "geo_location")
-    val geoLocation: GeoLocation?,
-    @Json(name = "open_tracking_id")
-    val openTrackingId: String,
+    @Json(name = "shift_id")
+    val shiftId: String?,
     @Json(name = "voter_records_request")
     val voterRecordsRequest: VoterRecordsRequest?
 )

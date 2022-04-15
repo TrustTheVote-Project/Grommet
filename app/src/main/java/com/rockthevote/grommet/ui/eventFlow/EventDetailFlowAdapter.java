@@ -26,16 +26,34 @@ public class EventDetailFlowAdapter extends PagerAdapter {
         View view;
         switch (position) {
             case 0:
-                view = new EventPartnerLogin(context);
+                view = new EventSplash(context);
                 break;
             case 1:
-                view = new EventCanvasserInfo(context);
+                view = new EventPartnerLogin(context);
                 break;
             case 2:
-                view = new SessionTimeTracking(context);
+                view = new EventCanvasserInfo(context);
                 break;
+//            case 3:
+//                view = new SessionTimeTracking(context);
+//                break;
+//            case 4:
+//                view = new SessionSummary(context);
+//                break;
             case 3:
-                view = new SessionSummary(context);
+                view = new EventStartCollection(context);
+                break;
+            case 4:
+                view = new EventCollectionStatus(context);
+                break;
+            case 5:
+                view = new EventEndStrangerCollection(context);
+                break;
+            case 6:
+                view = new EventEndCollection(context);
+                break;
+            case 7:
+                view = new EventEndShift(context);
                 break;
             default:
                 view = new EventCanvasserInfo(context);
@@ -59,7 +77,7 @@ public class EventDetailFlowAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 8;
     }
 
     @Override

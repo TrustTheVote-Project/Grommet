@@ -4,8 +4,13 @@ import android.content.SharedPreferences;
 
 import com.rockthevote.grommet.data.api.model.ClockInRequest;
 import com.rockthevote.grommet.data.api.model.ClockOutRequest;
+import com.rockthevote.grommet.data.api.model.CompleteShiftResponse;
+import com.rockthevote.grommet.data.api.model.CreateShiftBody;
+import com.rockthevote.grommet.data.api.model.CreateShiftResponse;
 import com.rockthevote.grommet.data.api.model.PartnerNameResponse;
 import com.rockthevote.grommet.data.api.model.RegistrationResponse;
+import com.rockthevote.grommet.data.api.model.UpdateShiftBody;
+import com.rockthevote.grommet.data.api.model.validation.IsValidResponse;
 import com.rockthevote.grommet.data.db.model.RockyRequest;
 import com.rockthevote.grommet.util.EnumPreferences;
 
@@ -58,6 +63,7 @@ public final class MockRockyService implements RockyService {
 
     public <T extends Enum<T>> void setResponse(Class<T> responseClass, T value) {
         responses.put(responseClass, value);
+
         EnumPreferences.saveEnumValue(preferences, responseClass.getCanonicalName(), value);
     }
 
@@ -69,10 +75,14 @@ public final class MockRockyService implements RockyService {
     }
 
     @Override
-    public Single<Result<PartnerNameResponse>> getPartnerName(@Query("partner_id") String partnerId,
-                                                              @Query("grommet_version") String version) {
+    public Single<Result<CompleteShiftResponse>> completeShift(String shiftId) {
+        return null;
+    }
+
+    @Override
+    public Single<Result<PartnerNameResponse>> getPartnerName(@Query("partner_id") String partnerId) {
         PartnerNameResponse response = getResponse(MockPartnerNameResponse.class).response;
-        return delegate.returning(Calls.response(response)).getPartnerName(partnerId, version);
+        return delegate.returning(Calls.response(response)).getPartnerName(partnerId);
     }
 
     @Override
@@ -95,5 +105,25 @@ public final class MockRockyService implements RockyService {
             default:
                 return delegate.returning(Calls.response("")).clockOut(clockOutRequest);
         }
+    }
+
+    @Override
+    public Single<Result<CreateShiftResponse>> createShift(CreateShiftBody createShiftBody) {
+        return null;
+    }
+
+    @Override
+    public Single<Result<Void>> updateShift(String shiftId, UpdateShiftBody body) {
+        return null;
+    }
+
+//    @Override
+//    public Single<Result<Void>> updateShift(String shiftId) {
+//        return null;
+//    }
+
+    @Override
+    public Single<Result<IsValidResponse>> getValidateVersion(String version) {
+        return null;
     }
 }

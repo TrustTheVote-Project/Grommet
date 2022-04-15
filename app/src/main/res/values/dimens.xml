@@ -8,7 +8,7 @@
     <dimen name="detail_horizontal_padding">16dp</dimen>
     <dimen name="detail_vertical_padding">16dp</dimen>
 
-    <dimen name="detail_backdrop_height">550dp</dimen>
+    <dimen name="detail_backdrop_height">880dp</dimen>
 
     <dimen name="card_width">@dimen/match_parent</dimen>
     <dimen name="toolbar_height">@dimen/increment</dimen>

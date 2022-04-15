@@ -110,7 +110,7 @@ public class AddressView extends GridLayout {
 
     public AddressView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.view_address, this);
+        LayoutInflater.from(context).inflate(R.layout.view_address_v4, this);
 
         if (!isInEditMode()) {
 
@@ -197,7 +197,7 @@ public class AddressView extends GridLayout {
                         } catch (IOException e) {
                             Timber.e(e, "AddressView: error loading zip codes");
                         }
-                        countyAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,
+                        countyAdapter = new ArrayAdapter<>(getContext(), R.layout.county_textview,
                                 counties.keySet().toArray(new String[0]));
 
                         countyAdapter.sort((o1, o2) -> o1.toString().compareTo(o2.toString()));
@@ -300,8 +300,14 @@ public class AddressView extends GridLayout {
             boolean zipcodeInCounty = !chosenCounty.isEmpty() &&
                     counties.get(chosenCounty).contains(zipEditText.getText().toString());
 
-            zipTIL.setError(zipcodeInCounty ?
-                    null : getContext().getString(R.string.zip_code_error));
+            if(zipEditText.getText().toString().isEmpty()){
+                zipTIL.setError(zipcodeInCounty ?
+                        null : getContext().getString(R.string.zip_code_error));
+            }else{
+                zipTIL.setError(zipcodeInCounty ?
+                        null : getContext().getString(R.string.zip_code_error_fc));
+            }
+
         } else {
             zipTIL.setError(null);
         }

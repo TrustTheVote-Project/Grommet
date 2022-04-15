@@ -112,6 +112,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/tvIfYouHavePADriversLicense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnSpan="2"
@@ -152,6 +153,18 @@
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/tvIfYouHavePENNDor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginEnd="@dimen/content_margin"
+        android:layout_marginStart="@dimen/content_margin"
+        android:paddingTop="@dimen/content_area_padding"
+        android:visibility="gone"
+        tools:visibility="gone"
+        android:text="@string/error_ssn_text"/>
 
     <CheckBox
         android:id="@+id/ssn_last_four_checkbox"
@@ -161,6 +174,8 @@
         android:gravity="bottom"
         android:paddingBottom="@dimen/content_area_padding"
         android:text="@string/label_does_not_have_ssn"/>
+
+
 
     <View
         style="@style/GrommetDivider"

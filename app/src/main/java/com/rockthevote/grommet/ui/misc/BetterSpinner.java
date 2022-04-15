@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.util.SparseArray;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 
@@ -43,8 +45,35 @@ public class BetterSpinner extends TextInputLayout {
         editText = new TextInputEditText(context);
         editText.setId(R.id.titleId);
         editText.setHeight((int) getResources().getDimension(R.dimen.list_item_height));
-        editText.setFocusable(false);
+//        editText.requestFocus();
+        editText.setFocusable(true);
+//        editText.setSingleLine(true);
         editText.setMaxLines(1);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (editText.getWindowToken() != null) {
+                        editText.performClick();
+                    }
+                }
+            }
+        });
+//        editText.setOnKeyListener(new OnKeyListener() {
+//
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                // If the event is a key-down event on the "enter" button
+//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+//                        (keyCode == KeyEvent.KEYCODE_ENTER))
+//                {
+//                    // Perform action on Enter key press
+//                    editText.foc();
+//                    txtUserPasword.requestFocus();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         editText.setCursorVisible(false);
         editText.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,
                 R.drawable.drop_down_arrow, 0);
