@@ -1,7 +1,7 @@
 // Manifest version information!
-def versionMajor = 3
-def versionMinor = 1
-def versionPatch = 0
+def versionMajor = 4
+def versionMinor = 3
+def versionPatch = 1
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
@@ -41,14 +41,16 @@ def gitTimestamp() {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     signingConfigs {
         grommet {
-            storeFile file('../keys/grommet.keystore')
-            storePassword System.env['KEYSTORE_PASSWORD']
+            storeFile file('D:\\backupG15_grommetActualNotShure\\neoviso\\grommet\\V4_LAST\\V4_LAST\\V4_LAST\\Grommet\\keys\\grommet.keystore')
+//            storeFile file('../keys/training.keystore')
+            storePassword "R0ckyourV0t3"
             keyAlias 'grommetKey'
-            keyPassword System.env['KEY_PASSWORD']
+//            keyAlias 'trainingKey'
+            keyPassword "R0ckyourV0t3"
         }
 
         debug {
@@ -61,7 +63,7 @@ android {
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 31
 //        multiDexEnabled true
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
@@ -98,6 +100,7 @@ android {
         production {
             dimension "default"
             applicationId 'com.rockethevote.grommet'
+//            applicationId 'com.rockethevote.grommet.training'
         }
     }
 
@@ -249,6 +252,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.8.1'
     implementation 'com.github.gcacace:signature-pad:1.2.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     implementation 'com.jakewharton:butterknife:10.2.0'
     kapt 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -279,4 +283,6 @@ dependencies {
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
+    //Gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 }

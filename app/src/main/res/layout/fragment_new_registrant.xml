@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|bottom"
-        app:name_type="CURRENT"/>
+        app:name_type="CURRENT" />
 
     <CheckBox
         android:id="@+id/name_changed"

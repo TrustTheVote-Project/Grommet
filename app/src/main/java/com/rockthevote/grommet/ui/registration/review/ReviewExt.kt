@@ -51,6 +51,12 @@ fun FragmentReviewAndConfirmBinding.bindReviewData(data: ReviewAndConfirmStateDa
             reviewMailAddress.visibility = View.GONE
             reviewMailAddress.text = ""
         }
+        if (party.toLowerCase() == "other"){
+            reviewOtherParty.visibility = View.VISIBLE
+            reviewOtherParty.text = data.otherParty
+        }else{
+            reviewOtherParty.visibility = View.GONE
+        }
 
         reviewRace.text = race
         reviewParty.text = party

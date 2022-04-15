@@ -20,7 +20,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
         library = true
 )
 public final class ApiModule {
-    public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://vr.rockthevote.com/api/v4/");
+   //public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://register.rockthevote.com/api/v4/");
+   public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://staging.rocky.rockthevote.com/api/v4/");
 
     @Provides @Singleton HttpUrl provideBaseUrl() {
         return PRODUCTION_API_URL;

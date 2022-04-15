@@ -113,29 +113,34 @@ class RegistrationViewModel(
                         canvasserName = currentSession.canvasserName,
                         sourceTrackingId = currentSession.sourceTrackingId,
                         partnerTrackingId = currentSession.partnerTrackingId,
-                        geoLocation = GeoLocation(
-                                lat = currentSession.geoLocation.latitude(),
-                                long = currentSession.geoLocation.longitude()
-                        ),
-                        openTrackingId = currentSession.openTrackingId
+//                        geoLocation = GeoLocation(
+//                                lat = currentSession.geoLocation.latitude(),
+//                                long = currentSession.geoLocation.longitude()
+//                        ),
+                        openTrackingId = currentSession.openTrackingId,
+                        shiftId = currentSession.shiftId
                 )
             } ?: run {
                 val exception = IllegalStateException("Empty session during registration")
                 Timber.e(exception)
 
-                SessionData(
-                        partnerId = -1,
-                        canvasserName = "empty",
-                        sourceTrackingId = "empty",
-                        partnerTrackingId = "empty",
-                        geoLocation = GeoLocation(-1.0, -1.0),
-                        openTrackingId = "empty"
-                )
+                currentSession?.shiftId?.let {
+                    SessionData(
+                            partnerId = -1,
+                            canvasserName = "empty",
+                            sourceTrackingId = "empty",
+                            partnerTrackingId = "empty",
+//                            geoLocation = GeoLocation(-1.0, -1.0),
+                            openTrackingId = "empty",
+                            shiftId = it
+
+                    )
+                }
             }
 
             runCatching {
-                val transformer = RegistrationDataTransformer(currentRegistrationData, sessionData, completionDate)
-                val requestData = transformer.transform()
+                val transformer = sessionData?.let { RegistrationDataTransformer(currentRegistrationData, it, completionDate) }
+                val requestData = transformer?.transform()
 
                 incrementSessionCounters(currentRegistrationData)
 

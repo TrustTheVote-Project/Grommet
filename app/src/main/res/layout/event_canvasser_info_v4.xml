@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_marginStart="@dimen/content_margin"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:id="@+id/partner_name_info"
+        android:text="Acme Widgets"
+        android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.12"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="@dimen/content_margin"
+            android:paddingTop="@dimen/content_area_padding"
+            android:paddingBottom="@dimen/content_area_padding"
+            android:text="@string/enter_your_check_in_information_in_the_fields_below_all_fields_are_required_nclick_the_start_shift_button_to_continue"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/content_margin"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/canvasser_first_name"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ede_til_event_zdip"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/materialTextView"
+                app:layout_constraintStart_toStartOf="@+id/materialTextView"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ede_canvasser_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:paddingStart="8dp"
+                    android:background="@drawable/edittext_frame"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="64"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/LastNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/canvasser_last_name"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_til_event_zdip"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/LastNameTextView"
+                app:layout_constraintStart_toStartOf="@+id/LastNameTextView"
+                app:layout_constraintTop_toBottomOf="@+id/LastNameTextView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ede_canvasser_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:paddingStart="8dp"
+                    android:background="@drawable/edittext_frame"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="64"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:layout_marginStart="@dimen/content_margin"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/phone_numb_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/canvasser_phone_number"
+            android:textColor="@color/colorPrimaryText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_event_zdip"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/phone_numb_text"
+            app:layout_constraintTop_toBottomOf="@+id/phone_numb_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone_ede_eventd"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingStart="8dp"
+                android:background="@drawable/edittext_frame"
+                android:inputType="phone"
+                android:maxLength="64"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:layout_marginStart="@dimen/content_margin"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/email_numb_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/canvasser_email_address"
+            android:textColor="@color/colorPrimaryText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_event_zdip"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/email_numb_text"
+            app:layout_constraintTop_toBottomOf="@+id/email_numb_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_eventd"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingStart="8dp"
+                android:background="@drawable/edittext_frame"
+                android:inputType="text"
+                android:maxLength="255"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:layout_marginStart="@dimen/content_margin"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/location_numb_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shift_location"
+            android:textColor="@color/colorPrimaryText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/location_event_zdip"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:translationY="-10dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/location_numb_text"
+            app:layout_constraintTop_toBottomOf="@+id/location_numb_text">
+
+            <!--            <com.google.android.material.textfield.TextInputEditText-->
+            <!--                android:id="@+id/location_eventd_zip"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="30dp"-->
+            <!--                android:background="@drawable/edittext_frame"-->
+            <!--                android:inputType="text"-->
+            <!--                android:maxLength="10"-->
+            <!--                android:maxLines="1" />-->
+            <Spinner
+                android:paddingStart="8dp"
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/spinner_background" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/save_view_animator"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top|center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/event_update_partner_id"
+            android:layout_width="100dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:text="@string/action_back" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_details_save"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/oval_shift"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/start_shift"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

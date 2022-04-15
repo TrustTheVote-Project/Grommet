@@ -16,13 +16,14 @@ fun RegistrationData.toReviewAndConfirmStateData(): ReviewAndConfirmStateData {
     val mailingAddress = addressData?.mailingAddress?.toFriendlyString()
 
     return ReviewAndConfirmStateData(
-        name = registrantName,
-        birthday = birthday,
-        email = additionalInfoData?.emailAddress ?: "",
-        phone = additionalInfoData?.phoneNumber ?: "",
-        residentialAddress = residentialAddress,
-        mailingAddress = mailingAddress,
-        race = additionalInfoData?.race?.toString() ?: "",
-        party = additionalInfoData?.party?.toString() ?: ""
+            name = registrantName,
+            birthday = birthday,
+            email = additionalInfoData?.emailAddress ?: "",
+            phone = additionalInfoData?.phoneNumber ?: "",
+            residentialAddress = residentialAddress,
+            mailingAddress = mailingAddress,
+            race = additionalInfoData?.race?.toString() ?: "",
+            party = additionalInfoData?.party?.toString() ?: "",
+            otherParty = additionalInfoData?.otherPoliticalParty.toString()
     )
 }

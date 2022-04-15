@@ -46,8 +46,7 @@
         android:layout_gravity="start|bottom"
         android:visibility="gone"
         app:address_type="MAILING"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <CheckBox
         android:id="@+id/address_changed"

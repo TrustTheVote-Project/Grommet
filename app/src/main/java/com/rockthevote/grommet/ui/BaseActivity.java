@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import dagger.ObjectGraph;
+import timber.log.Timber;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getLayoutInflater();
 
+        Timber.e("BaseActivity onCreate");
         appGraph = Injector.obtain(getApplication());
         appGraph.inject(this);
 

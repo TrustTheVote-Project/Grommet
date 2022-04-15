@@ -21,5 +21,6 @@ data class SessionSummaryData(
         val abandonedRegistrations: Int = 0,
         val registrations: List<Registration?> = emptyList(),
         val clockInTime: Date? = null,
-        val clockOutTime: Date? = null
+        val clockOutTime: Date? = null,
+        val canvasserLastName: String = ""
 )

@@ -29,7 +29,7 @@ public final class GrommetApp extends Application {
     public void onCreate() {
         super.onCreate();
         AndroidThreeTen.init(this);
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
 
         if (BuildConfig.DEBUG) {
@@ -55,4 +55,5 @@ public final class GrommetApp extends Application {
         }
         return super.getSystemService(name);
     }
+
 }

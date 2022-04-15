@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationServices;
 import com.rockthevote.grommet.data.api.ApiModule;
 import com.rockthevote.grommet.data.api.RockyAdapterFactory;
 import com.rockthevote.grommet.data.api.StringNormalizerFactory;
+import com.rockthevote.grommet.data.api.model.ArrayAdapter;
 import com.rockthevote.grommet.data.api.model.DateAdapter;
 import com.rockthevote.grommet.ui.MainActivity;
 import com.rockthevote.grommet.ui.registration.BaseRegistrationFragment;
@@ -68,6 +69,7 @@ public final class DataModule {
                 .add(new StringNormalizerFactory())
                 .add(RockyAdapterFactory.create())
                 .add(new DateAdapter())
+                .add(new ArrayAdapter())
                 .add(new KotlinJsonAdapterFactory())
                 .build();
     }

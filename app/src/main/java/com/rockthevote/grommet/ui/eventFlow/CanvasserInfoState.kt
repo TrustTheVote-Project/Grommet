@@ -8,4 +8,5 @@ sealed class CanvasserInfoState {
     object Success : Effect()
     object Error : Effect()
     object LocationError : Effect()
+    object NetworkError : Effect()
 }

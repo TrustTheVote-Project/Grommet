@@ -48,7 +48,9 @@ class RegistrationViewModelTest {
             "temp",
             "temp",
             GeoLocation(1.0, 1.0),
-            "temp"
+            "temp",
+            "Globally Unique Shift ID"
+
     )
 
     private val fakeSession = Session(

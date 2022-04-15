@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.mobsandgeeks.saripaar.Validator;
@@ -44,6 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
+import timber.log.Timber;
 
 import static com.rockthevote.grommet.data.db.model.Party.OTHER_PARTY;
 
@@ -79,11 +81,13 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
     @BindView(R.id.email_edit_text) EditText email;
     @BindView(R.id.email_opt_in) CheckBox emailOptIn;
 
-    @Phone(messageResId = R.string.phone_format_error, allowEmpty = true)
+//    @Phone(messageResId = R.string.phone_format_error, allowEmpty = true)
     @Pattern(regex = ValidationRegex.PHONE, messageResId = R.string.phone_format_error)
     @BindView(R.id.til_phone_number) TextInputLayout phoneNumber;
 
     @BindView(R.id.phone) EditText phone;
+    @BindView(R.id.tvIfYouHavePADriversLicense) TextView ifYouHaveDL;
+    @BindView(R.id.tvIfYouHavePENNDor) TextView ifYouPennDOT;
     @BindView(R.id.spinner_phone_type) BetterSpinner phoneTypeSpinner;
     @BindView(R.id.checkbox_can_receive_text) CheckBox phoneOptIn;
     @BindView(R.id.checkbox_partner_volunteer_opt_in) CheckBox partnerVolunteerCheckBox;
@@ -176,7 +180,7 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
             langPrefSpinner.getEditText().setText(preferredLanguageEnumAdapter.getItem(i).toString());
             langPrefSpinner.dismiss();
         });
-
+//        langPrefSpinner.requestFocus();
         observeState();
     }
 
@@ -241,24 +245,35 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
      */
     @OnCheckedChanged(R.id.does_not_have_penn_dot_checkbox)
     public void onDriversLicenseChecked(boolean checked) {
-        pennDOTTIL.setVisibility(!checked ? View.VISIBLE : View.GONE);
+       // pennDOTTIL.setVisibility(!checked ? View.VISIBLE : View.GONE);
 
         // disabling it prevents Saripaar from trying to validate it
+        // penn_dot_enforcer_text
         pennDOTTIL.setEnabled(!checked);
         if (checked) {
-            pennDOTTIL.setErrorEnabled(false);
+          pennDOTTIL.setErrorEnabled(false);
+            ifYouHaveDL.setTextColor(getResources().getColor(R.color.colorAccent,null));
+            ifYouHaveDL.setText(getContext().getString(R.string.warning_penn_dot));
+        }else {
+            ifYouHaveDL.setTextColor(getResources().getColor(R.color.defTextColor,null));
+            ifYouHaveDL.setText(getContext().getString(R.string.penn_dot_enforcer_text));
         }
         doesNotHavePennDOT.onNext(checked);
     }
 
     @OnCheckedChanged(R.id.ssn_last_four_checkbox)
     public void onSSNChecked(boolean checked) {
-        ssnTIL.setVisibility(!checked ? View.VISIBLE : View.GONE);
+        ifYouPennDOT.setVisibility(checked ? View.VISIBLE : View.GONE);
 
         // disabling it prevents Saripaar from trying to validate it
         ssnTIL.setEnabled(!checked);
         if (checked) {
-            ssnTIL.setErrorEnabled(false);
+           // ifYouPennDOT.setErrorEnabled(false);
+            ifYouPennDOT.setTextColor(getResources().getColor(R.color.colorAccent,null));
+            ifYouPennDOT.setText(getContext().getString(R.string.warning_ssn));
+        }else {
+            ifYouPennDOT.setTextColor(getResources().getColor(R.color.defTextColor,null));
+            ifYouPennDOT.setText(getContext().getString(R.string.error_ssn_text));
         }
         doesNotHaveSSN.onNext(checked);
     }
@@ -280,26 +295,29 @@ public class AdditionalInfoFragment extends BaseRegistrationFragment {
         Observable<Boolean> emailOptInVerification = Observable.just(
                 !emailOptIn.isChecked() || !Strings.isBlank(textInputEmail.getEditText().getText()));
 
-        Observable<Boolean> phoneOptInVerification = Observable.just(
-                !phoneOptIn.isChecked() || !Strings.isBlank(phoneNumber.getEditText().getText()));
+//        Observable<Boolean> phoneOptInVerification = Observable.just()
+//                !phoneOptIn.isChecked());
+//                !phoneOptIn.isChecked() || !Strings.isBlank(phoneNumber.getEditText().getText()));
 
-        return Observable.zip(emailOptInVerification, phoneOptInVerification, validator.validate(),
-                (emailRes, phoneRes, validatorRes) -> {
+//        return Observable.zip(emailOptInVerification, phoneOptInVerification, validator.validate(),
+        return Observable.zip(emailOptInVerification, validator.validate(),
+                (emailRes, validatorRes) -> {
                     if (!emailRes) {
                         textInputEmail.setError(getString(R.string.email_error));
                     }
 
-                    if (!phoneRes) {
-                        phoneNumber.setError(getString(R.string.phone_format_error));
-                    }
+//                    if (!phoneRes) {
+//                        phoneNumber.setError(getString(R.string.phone_format_error));
+//                    }
 
-                    return emailRes && phoneRes && validatorRes;
+                    return emailRes && validatorRes;
                 });
     }
 
     @Override
     public void storeState() {
         AdditionalInfoData data = AdditionalInfoExtKt.toAdditionalInfoData(binding);
+        Timber.e(data.toString());
         viewModel.storeAdditionalInfoData(data);
     }
 }

@@ -10,6 +10,7 @@ data class SessionData(
     val canvasserName: String,
     val sourceTrackingId: String,
     val partnerTrackingId: String,
-    val geoLocation: GeoLocation,
-    val openTrackingId: String
+//    val geoLocation: GeoLocation,
+    val openTrackingId: String,
+    val shiftId: String
 )

@@ -7,5 +7,7 @@ sealed class SessionSummaryState {
 
     abstract class Effect : SessionSummaryState()
     object Cleared : Effect()
+    object ShiftUpdated : Effect()
+    object NetworkError : Effect()
     object Error : Effect()
 }

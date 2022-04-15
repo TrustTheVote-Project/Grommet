@@ -8,7 +8,14 @@ public enum SessionStatus {
     SESSION_CLEARED("session_cleared"),
     DETAILS_ENTERED("details_entered"),
     CLOCKED_IN("clocked_in"),
-    CLOCKED_OUT("clocked_out");
+    CLOCKED_OUT("clocked_out"),
+    SPLASH("splash"),
+    START_COLLECTION("start_collection"),
+    STATUS_COLLECTION("status_collection"),
+    END_STRANGER_COLLECTION("end_stranger_collection"),
+    END_COLLECTION("end_collection"),
+    END_SHIFT("end_shift");
+
 
     private final String type;
 
