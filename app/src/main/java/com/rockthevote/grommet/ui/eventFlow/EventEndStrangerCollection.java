@@ -208,13 +208,8 @@ public class EventEndStrangerCollection extends FrameLayout implements EventFlow
 
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ConnectivityManager connectivityManager = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-         Network nw = connectivityManager.getActiveNetwork();
-            if (nw == null) return false;
-            NetworkCapabilities actNw = connectivityManager.getNetworkCapabilities(nw);
-            return actNw != null && (actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
-        } else {
+
+
 
             WifiManager wifiMgr = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
 
@@ -232,7 +227,7 @@ public class EventEndStrangerCollection extends FrameLayout implements EventFlow
                 return false;
             }
 
-        }
+
 
 
     }
