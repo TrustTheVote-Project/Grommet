@@ -45,7 +45,7 @@ android {
 
     signingConfigs {
         grommet {
-            storeFile file('D:\\backupG15_grommetActualNotShure\\neoviso\\grommet\\V4_LAST\\V4_LAST\\V4_LAST\\Grommet\\keys\\grommet.keystore')
+            storeFile file('..keys\\grommet.keystore')
 //            storeFile file('../keys/training.keystore')
             storePassword "R0ckyourV0t3"
             keyAlias 'grommetKey'
